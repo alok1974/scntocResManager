@@ -45,10 +45,6 @@ def _makeDisplayGridDataFromModelDict(inNames):
         else:
             rootName = modelName[:len(str(modelNumber)) * -1]
 
-        if rootName is str("NM7"):
-            print modelName
-        #print rootName
-
         if not d.has_key(rootName):
             d[rootName] = []
 
