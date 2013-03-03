@@ -3,6 +3,7 @@
 *.komodoproject
 
 styleSheets/prefs
+srcPsd/*.*
 
 # C extensions
 *.so
