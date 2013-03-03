@@ -1,5 +1,7 @@
 *.pyc
 
+styleSheets/prefs
+
 # C extensions
 *.so
 
