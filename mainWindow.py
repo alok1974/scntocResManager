@@ -463,21 +463,6 @@ class MainWindow(QtGui.QMainWindow):
         
         mw._writeScntoc()
         
-        #if mw._file!=None:
-        #    if mw._dataChanged:
-        #        msg = '\n'
-        #        msg += '        Do you want to save changes in the current file ?           '
-        #        msg += '\n\n'
-        #        title = 'Save current file ?'
-        #        if mw._showDialog(title, msg):
-        #            for modelName, activeResName in mw._modelActiveResNames.iteritems():
-        #                mw._modelDict[modelName]['activeRes'] = [  resDict['resID']
-        #                                                           for resDict in mw._modelResData[modelName]
-        #                                                           if resDict['resName']==activeResName][0]
-        #
-        #            # Writing changes to the scntoc file
-        #            mw._sr.write()
-
         mw._dataChanged = False
         mw._file = None
         mw._hasFileloaded = False
