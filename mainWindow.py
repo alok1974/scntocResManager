@@ -322,23 +322,6 @@ class MainWidget(MainWidgetUI):
 
     def _applyBtnOnClicked(self):
         self._writeScntoc()
-        #if self._dataChanged:
-        #    msg = '\n'
-        #    msg += '        Do you want to apply and write changed to the scntoc file ?           '
-        #    msg += '\n\n'
-        #    title = 'Write Changes to file ?'
-        #
-        #    if not self._showDialog(title, msg):
-        #        return
-        #
-        #    for modelName, activeResName in self._modelActiveResNames.iteritems():
-        #        self._modelDict[modelName]['activeRes'] = [  resDict['resID']
-        #                                                   for resDict in self._modelResData[modelName]
-        #                                                   if resDict['resName']==activeResName][0]
-        #
-        #    # Writing changes to the scntoc file
-        #    self._sr.write()
-
         QtCore.QCoreApplication.instance().quit()
 
     def _cancelBtnOnClicked(self):
@@ -449,7 +432,7 @@ class MainWindow(QtGui.QMainWindow):
 
         self.move(100, 100)
 
-        self.setWindowTitle("Reference Model Manager")
+        self.setWindowTitle("Scenetoc Res Manager v 1.0")
 
         StyleSheet().setColor(self, app=QtCore.QCoreApplication.instance())
         StyleSheet().setColor(self._mainWidget)
