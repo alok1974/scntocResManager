@@ -121,7 +121,6 @@ class TextWidget(QtGui.QDialog):
         self._vLayout.addWidget(self.textEdit)
         self._vLayout.addLayout(self._hLayout)
 
-        self.setWindowTitle('Model Resolution Change Log')
         self.setGeometry(300, 100, 500, 600)
 
         self.setLayout(self._vLayout)
@@ -281,6 +280,9 @@ class HelpWidget(QtGui.QDialog):
     def _licenseBtnOnClicked(self):
         if not hasattr(self, 'tw'):
             self.tw = TextWidget()
+        else:
+            self.tw = None
+            self.tw = TextWidget()
 
         self.close()
 
@@ -291,6 +293,8 @@ class HelpWidget(QtGui.QDialog):
         te.setTextColor(QtGui.QColor(227, 227, 227))
 
         te.setText(self._codeCache['licenseTxt'])
+        
+        self.tw.setWindowTitle('License')
 
         self.tw.show()
 

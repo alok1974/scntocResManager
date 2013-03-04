@@ -48,12 +48,16 @@ class MainWidget(MainWidgetUI):
         if self._sr._hasError:
             if not hasattr(self, 'tw'):
                 self.tw = TextWidget()
+            else:
+                self.tw = None
+                self.tw = TextWidget()
 
             errStr = ''
             errStr += 'There were following error/errors in opening file:\n\n'
             errStr += self._sr._error
 
             self.tw.textEdit.setText(errStr)
+            self.tw.setWindowTitle('File Open Error')
             self.tw.setGeometry(100, 100, 500, 250)
             self.tw.show()
 
@@ -307,7 +311,8 @@ class MainWidget(MainWidgetUI):
         else:
             self.tw = None
             self.tw = TextWidget()
-        
+
+        self.tw.setWindowTitle('Model Resolution Change Log')
         self.tw.textEdit.setText(viewLog)
         self.tw.show()
 
