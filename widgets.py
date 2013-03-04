@@ -326,6 +326,7 @@ class HelpWidget(QtGui.QDialog):
 class MainWidgetUI(QtGui.QWidget):
     def __init__(self, *args, **kwargs):
         super(MainWidgetUI, self).__init__(*args, **kwargs)
+        self._hasFileloaded = False
 
     def _setupUI(self):
         # Labels
@@ -359,7 +360,7 @@ class MainWidgetUI(QtGui.QWidget):
         self._cancelBtn  = QtGui.QPushButton('Cancel')
         #self._cancelBtn.setMinimumSize(300, btnHeight)
         self._cancelBtn.setToolTip('Close without saving any changes.')
-        self._cancelBtn.clicked.connect(self._cancelBtnOnClicked)
+        self._cancelBtn.clicked.connect(self._cancelBtnOnClickedBase)
 
 
         # QLists and QLines
@@ -413,8 +414,11 @@ class MainWidgetUI(QtGui.QWidget):
         
         StyleSheet().setColor(self)
 
-    def _cancelBtnOnClickedInitial(self):
-        pass # will be overriden in the child class
+    def _cancelBtnOnClickedBase(self):
+        if self._hasFileloaded:
+            return
+        
+        QtCore.QCoreApplication.instance().quit()
 
 class TestWidget(HelpWidget):
     def __init__(self, *args, **kwargs):

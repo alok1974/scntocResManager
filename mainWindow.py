@@ -62,10 +62,11 @@ class MainWidget(MainWidgetUI):
         self._modelDict = self._sr.getModels()
         self._initData()
         self._initWidgets()
+        self._hasFileloaded = True
 
         # Connect Signals
         self._connectSignals()
-
+        
     def _initData(self):
         self._modelListWidget.clear()
         self._avResListWidget.clear()
@@ -320,22 +321,23 @@ class MainWidget(MainWidgetUI):
 
 
     def _applyBtnOnClicked(self):
-        if self._dataChanged:
-            msg = '\n'
-            msg += '        Do you want to apply and write changed to the scntoc file ?           '
-            msg += '\n\n'
-            title = 'Write Changes to file ?'
-
-            if not self._showDialog(title, msg):
-                return
-
-            for modelName, activeResName in self._modelActiveResNames.iteritems():
-                self._modelDict[modelName]['activeRes'] = [  resDict['resID']
-                                                           for resDict in self._modelResData[modelName]
-                                                           if resDict['resName']==activeResName][0]
-
-            # Writing changes to the scntoc file
-            self._sr.write()
+        self._writeScntoc()
+        #if self._dataChanged:
+        #    msg = '\n'
+        #    msg += '        Do you want to apply and write changed to the scntoc file ?           '
+        #    msg += '\n\n'
+        #    title = 'Write Changes to file ?'
+        #
+        #    if not self._showDialog(title, msg):
+        #        return
+        #
+        #    for modelName, activeResName in self._modelActiveResNames.iteritems():
+        #        self._modelDict[modelName]['activeRes'] = [  resDict['resID']
+        #                                                   for resDict in self._modelResData[modelName]
+        #                                                   if resDict['resName']==activeResName][0]
+        #
+        #    # Writing changes to the scntoc file
+        #    self._sr.write()
 
         QtCore.QCoreApplication.instance().quit()
 
@@ -351,6 +353,29 @@ class MainWidget(MainWidgetUI):
                     return
 
         QtCore.QCoreApplication.instance().quit()
+        
+    def _writeScntoc(self):
+        if not self._file:
+            return
+        
+        if not self._dataChanged:
+            return
+        
+        msg = '\n'
+        msg += '        Do you want to write changes to the loaded file ?           '
+        msg += '\n\n'
+        title = 'Save current file ?'
+        
+        if not self._showDialog(title, msg):
+            return
+        
+        for modelName, activeResName in self._modelActiveResNames.iteritems():
+            self._modelDict[modelName]['activeRes'] = [  resDict['resID']
+                                                       for resDict in self._modelResData[modelName]
+                                                       if resDict['resName']==activeResName][0]
+
+        # Writing changes to the scntoc file
+        self._sr.write()     
 
 class MainWindow(QtGui.QMainWindow):
     def __init__(self, *args, **kwargs):
@@ -451,30 +476,35 @@ class MainWindow(QtGui.QMainWindow):
         ss.setColor(self, app= QtCore.QCoreApplication.instance())        
 
     def _onFileOpen(self):
-        if self._mainWidget._file!=None:
-            if self._mainWidget._dataChanged:
-                msg = '\n'
-                msg += '        Do you want to save changes in the current file ?           '
-                msg += '\n\n'
-                title = 'Save current file ?'
-                if self._mainWidget._showDialog(title, msg):
-                    for modelName, activeResName in self._mainWidget._modelActiveResNames.iteritems():
-                        self._mainWidget._modelDict[modelName]['activeRes'] = [  resDict['resID']
-                                                                   for resDict in self._mainWidget._modelResData[modelName]
-                                                                   if resDict['resName']==activeResName][0]
+        mw = self._mainWidget
+        
+        mw._writeScntoc()
+        
+        #if mw._file!=None:
+        #    if mw._dataChanged:
+        #        msg = '\n'
+        #        msg += '        Do you want to save changes in the current file ?           '
+        #        msg += '\n\n'
+        #        title = 'Save current file ?'
+        #        if mw._showDialog(title, msg):
+        #            for modelName, activeResName in mw._modelActiveResNames.iteritems():
+        #                mw._modelDict[modelName]['activeRes'] = [  resDict['resID']
+        #                                                           for resDict in mw._modelResData[modelName]
+        #                                                           if resDict['resName']==activeResName][0]
+        #
+        #            # Writing changes to the scntoc file
+        #            mw._sr.write()
 
-                    # Writing changes to the scntoc file
-                    self._mainWidget._sr.write()
-
-        self._mainWidget._dataChanged = False
-        self._mainWidget._file = None
+        mw._dataChanged = False
+        mw._file = None
+        mw._hasFileloaded = False
 
 
         fg = QtGui.QFileDialog()
         f = str(fg.getOpenFileName(self, 'Open file', '', "Scntoc File (*.scntoc)"))
 
-        self._mainWidget.load(f)
-        self._mainWidget.run()
+        mw.load(f)
+        mw.run()
 
     def _onAboutAction(self):
         self._showHelpWidget()
