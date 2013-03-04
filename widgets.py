@@ -22,22 +22,17 @@ import helpers
 APP_STYLE = ("WindowsVista" if sys.platform.startswith('win')  else "PLastique")
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 
+
+
 class StyleSheet(object):
-
-    STYLESHEET_PATHS = {
-                            'dark': os.path.join(ROOT_DIR, 'styleSheets', 'dark_stylesheet.txt'),
-                            'soft': os.path.join(ROOT_DIR, 'styleSheets', 'softimage_stylesheet.txt'),
-                            'maya': os.path.join(ROOT_DIR, 'styleSheets', 'maya_stylesheet.txt'),
-                            'nuke': os.path.join(ROOT_DIR, 'styleSheets', 'nuke_stylesheet.txt'),
-
-                        }
+    STYLESHEET_OPTIONS = ['dark', 'soft', 'maya', 'nuke',]
 
     def __init__(self, *args, **kwargs):
         super(StyleSheet, self).__init__(*args, **kwargs)
         self.prefFile = os.path.join(ROOT_DIR, 'styleSheets', 'prefs')
         self.style = ''
 
-    
+
     def _createPrefs(self):
         with open(self.prefFile, 'w') as f:
             f.write('theme:')
@@ -50,13 +45,13 @@ class StyleSheet(object):
             s = f.readlines()
 
         self.style= s[0].split(':')[-1]
-        
+
         return self.style
 
     def _writePrefs(self, pref=''):
         if not os.path.exists(self.prefFile):
             self._createPrefs()
-            
+
         with open(self.prefFile, 'w') as f:
             f.write('theme:%s' % pref)
 
@@ -67,15 +62,15 @@ class StyleSheet(object):
             if app:
                 pass
                 app.setStyle(QtGui.QStyleFactory.create(APP_STYLE))
-            
+
             widget.setStyleSheet("")
 
             return
 
-        p = self.STYLESHEET_PATHS.get(self.style)
+        if self.style not in self.STYLESHEET_OPTIONS:
+            raise Exception('"%s" type of stylesheet option does not exist !!' % self.style)
 
-        if not p:
-            raise Exception('"%s" type of stylesheet option does not exist !!' % STYLESHEET)
+        p = os.path.join(ROOT_DIR, 'styleSheets', str(self.style))
 
         if not os.path.exists(p):
             raise Exception('Style Path - %s does not exist !!' % p)
@@ -150,8 +145,8 @@ class HelpWidget(QtGui.QDialog):
 
         # Set UI
         self._initUI()
-        
-        StyleSheet().setColor(self)        
+
+        StyleSheet().setColor(self)
 
         # Connect Signals
         self._connectSignals()
@@ -293,7 +288,7 @@ class HelpWidget(QtGui.QDialog):
         te.setTextColor(QtGui.QColor(227, 227, 227))
 
         te.setText(self._codeCache['licenseTxt'])
-        
+
         self.tw.setWindowTitle('License')
 
         self.tw.show()
@@ -415,13 +410,13 @@ class MainWidgetUI(QtGui.QWidget):
 
         self._mainLayout = QtGui.QVBoxLayout(self)
         self._mainLayout.addLayout(self._grid)
-        
+
         StyleSheet().setColor(self)
 
     def _cancelBtnOnClickedBase(self):
         if self._hasFileloaded:
             return
-        
+
         QtCore.QCoreApplication.instance().quit()
 
 class TestWidget(HelpWidget):
