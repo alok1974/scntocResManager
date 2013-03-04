@@ -337,27 +337,27 @@ class MainWidgetUI(QtGui.QWidget):
         self._nbModelLabel.setToolTip('Total number of models in the scntoc file.')
 
         # Buttons
-        btnHeight = 50
+        #btnHeight = 50
 
         self._offloadBtn  = QtGui.QPushButton('Offload All')
-        self._offloadBtn.setMinimumSize(300, btnHeight)
+        #self._offloadBtn.setMinimumSize(300, btnHeight)
         self._offloadBtn.setToolTip('Offload All Models.')
 
         self._viewBtn  = QtGui.QPushButton('View Changes')
-        self._viewBtn.setMinimumSize(300, btnHeight)
+        #self._viewBtn.setMinimumSize(300, btnHeight)
         self._viewBtn.setToolTip('View the changes to be commited.')
 
 
         self._resetBtn  = QtGui.QPushButton('Reset All Res to Original')
-        self._resetBtn.setMinimumSize(300, btnHeight)
+        #self._resetBtn.setMinimumSize(300, btnHeight)
         self._resetBtn.setToolTip('Reset data to original file at open time.')
 
         self._applyBtn  = QtGui.QPushButton('Write and Close')
-        self._applyBtn.setMinimumSize(300, btnHeight)
+        #self._applyBtn.setMinimumSize(300, btnHeight)
         self._applyBtn.setToolTip('Apply the changes and write the scntoc file on disk.')
 
         self._cancelBtn  = QtGui.QPushButton('Cancel')
-        self._cancelBtn.setMinimumSize(300, btnHeight)
+        #self._cancelBtn.setMinimumSize(300, btnHeight)
         self._cancelBtn.setToolTip('Close without saving any changes.')
         self._cancelBtn.clicked.connect(self._cancelBtnOnClicked)
 
