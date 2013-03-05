@@ -43,25 +43,6 @@ You will need the following installed on your machine:
 -----------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------
 
-
-Changing the color theme of the application:
-
-
-You can manually change the color theme of the application by doing the following modifications:
-1. Open the file ../widgets.py in your text editor.
-2. Find the global variable 'STYLESHEET' at the beginning of the file (at around line 23)
-3. Change the variable STYLESHEET to one of the following options:
-'dark' (a generic dark color theme)
-'softimage' (To closely match with the Autodesk Softimage Color theme)
-'nuke' (To closely match with the The Foundry Nuke Color theme)
-'maya' (To closely match with the The Autodesk MayaColor theme)
-'' (To set the color theme to nil, i.e, Qt Default 'Plastique' theme)
-
-
------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------
-
-
 To Run:
 
 Manually:
