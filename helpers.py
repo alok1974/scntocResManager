@@ -29,7 +29,7 @@ def _getNumberFromString(s):
     if not n:
         return
 
-    return sum([(pow(10,i) * p) for i, p in enumerate(n)])
+    return str(sum([(pow(10,i) * p) for i, p in enumerate(n)])).zfill(len(n))
 
 def _makeDisplayGridDataFromModelDict(inNames):
     modelNames = []
@@ -48,7 +48,8 @@ def _makeDisplayGridDataFromModelDict(inNames):
         try:
             modelNumber = int(modelNumber)
         except:
-            pass
+            if modelNumber!=None:
+                raise Exception('cannot convert %s to a number !' % modelNumber)
 
         d[rootName].append((modelNumber, modelName, rootName))
 
@@ -59,6 +60,7 @@ def _makeDisplayGridDataFromModelDict(inNames):
         rootNames.extend([t[2] for t in nameTuples])
 
     return modelNames, rootNames
+
 
 def _sortAndMakeColors(inModelNames):
     sortedNames, extractedRoots = _makeDisplayGridDataFromModelDict(inModelNames)
