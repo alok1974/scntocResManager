@@ -70,7 +70,7 @@ class MainWidget(MainWidgetUI):
 
         # Connect Signals
         self._connectSignals()
-        
+
     def _initData(self):
         self._modelListWidget.clear()
         self._avResListWidget.clear()
@@ -185,26 +185,17 @@ class MainWidget(MainWidgetUI):
 
         if self._mutliSelected:
             for modelName in self._selectedModelNames:
-                clickedRes = item.text()
-                currentRes = self._modelActiveResNamesOriginal[modelName]
-
-                if str(clickedRes)!=str(currentRes):
-                    self._dataChanged = True
-                else:
-                    self._dataChanged = False
-
-                self._modelActiveResNames[modelName] = item.text()
-
+                self._setActiveResolution(item, modelName)
         else:
-            clickedRes = item.text()
-            currentRes = self._modelActiveResNamesOriginal[self._selectedModelName]
+            self._setActiveResolution(item, self._selectedModelName)
 
-            if str(clickedRes)!=str(currentRes):
-                self._dataChanged = True
-            else:
-                self._dataChanged = False
+    def _setActiveResolution(self, inItem, inModelName):
+            clickedRes = str(inItem.text())
+            currentRes = self._modelActiveResNamesOriginal[inModelName]
+            self._dataChanged = (clickedRes!=currentRes)
+            self._modelActiveResNames[inModelName] = str(inItem.text())
 
-            self._modelActiveResNames[self._selectedModelName] = item.text()
+
 
     def _modelNameOnSelectionChange(self):
         if len(self._modelListWidget.selectedItems()) > 1:
@@ -341,29 +332,29 @@ class MainWidget(MainWidgetUI):
                     return
 
         QtCore.QCoreApplication.instance().quit()
-        
+
     def _writeScntoc(self):
         if not self._file:
             return
-        
+
         if not self._dataChanged:
             return
-        
+
         msg = '\n'
         msg += '        Do you want to write changes to the loaded file ?           '
         msg += '\n\n'
         title = 'Save current file ?'
-        
+
         if not self._showDialog(title, msg):
             return
-        
+
         for modelName, activeResName in self._modelActiveResNames.iteritems():
             self._modelDict[modelName]['activeRes'] = [  resDict['resID']
                                                        for resDict in self._modelResData[modelName]
                                                        if resDict['resName']==activeResName][0]
 
         # Writing changes to the scntoc file
-        self._sr.write()     
+        self._sr.write()
 
 class MainWindow(QtGui.QMainWindow):
     def __init__(self, *args, **kwargs):
@@ -372,7 +363,7 @@ class MainWindow(QtGui.QMainWindow):
         mainWidget = QtGui.QFrame()
 
         self._mainWidget = MainWidget()
-        
+
         mainLayout = QtGui.QVBoxLayout()
         mainLayout.addWidget(self._mainWidget, 100)
         mainWidget.setLayout(mainLayout)
@@ -387,7 +378,7 @@ class MainWindow(QtGui.QMainWindow):
         helpAction.setShortcut('F1')
         helpAction.setStatusTip('Help')
         helpAction.triggered.connect(self._onHelpAction)
-        
+
         defaultStyleAction = QtGui.QAction('Default', self)
         defaultStyleAction.setShortcut('Ctrl+1')
         defaultStyleAction.setStatusTip('Default Style Theme : Windowsvista on Windows OS else Plastique')
@@ -397,21 +388,21 @@ class MainWindow(QtGui.QMainWindow):
         darkStyleAction.setShortcut('Ctrl+2')
         darkStyleAction.setStatusTip('Generic Dark Style Theme')
         darkStyleAction.triggered.connect(self._onDarkStyleAction)
-        
+
         softStyleAction = QtGui.QAction('Softimage', self)
         softStyleAction.setShortcut('Ctrl+3')
         softStyleAction.setStatusTip('Softimage Style Theme')
         softStyleAction.triggered.connect(self._onSoftStyleAction)
-        
+
         mayaStyleAction = QtGui.QAction('Maya', self)
         mayaStyleAction.setShortcut('Ctrl+4')
         mayaStyleAction.setStatusTip('Maya Style Theme')
-        mayaStyleAction.triggered.connect(self._onMayaStyleAction)        
+        mayaStyleAction.triggered.connect(self._onMayaStyleAction)
 
         nukeStyleAction = QtGui.QAction('Nuke', self)
         nukeStyleAction.setShortcut('Ctrl+5')
         nukeStyleAction.setStatusTip('Nuke Style Theme')
-        nukeStyleAction.triggered.connect(self._onNukeStyleAction)        
+        nukeStyleAction.triggered.connect(self._onNukeStyleAction)
 
         aboutAction = QtGui.QAction('&About', self)
         aboutAction.setStatusTip('About Resolution Manager')
@@ -422,7 +413,7 @@ class MainWindow(QtGui.QMainWindow):
         menubar = self.menuBar()
         fileMenu = menubar.addMenu('&File')
         fileMenu.addAction(fileOpenAction)
-        
+
         editMenu = menubar.addMenu('&Edit')
         themeMenu = editMenu.addMenu('A&pply Themes')
         themeMenu.addAction(defaultStyleAction)
@@ -441,15 +432,15 @@ class MainWindow(QtGui.QMainWindow):
 
         StyleSheet().setColor(self, app=QtCore.QCoreApplication.instance())
         StyleSheet().setColor(self._mainWidget)
-    
+
     def _onDefaultStyleAction(self):
         self._setTheme('')
- 
+
     def _onDarkStyleAction(self):
-        self._setTheme('dark')       
+        self._setTheme('dark')
 
     def _onSoftStyleAction(self):
-        self._setTheme('soft')        
+        self._setTheme('soft')
 
     def _onMayaStyleAction(self):
         self._setTheme('maya')
@@ -461,13 +452,13 @@ class MainWindow(QtGui.QMainWindow):
         ss = StyleSheet()
         ss._writePrefs(pref=theme)
         ss.setColor(self._mainWidget)
-        ss.setColor(self, app= QtCore.QCoreApplication.instance())        
+        ss.setColor(self, app= QtCore.QCoreApplication.instance())
 
     def _onFileOpen(self):
         mw = self._mainWidget
-        
+
         mw._writeScntoc()
-        
+
         mw._dataChanged = False
         mw._file = None
         mw._hasFileloaded = False
