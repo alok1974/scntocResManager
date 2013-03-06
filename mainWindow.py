@@ -195,8 +195,6 @@ class MainWidget(MainWidgetUI):
             self._dataChanged = (clickedRes!=currentRes)
             self._modelActiveResNames[inModelName] = str(inItem.text())
 
-
-
     def _modelNameOnSelectionChange(self):
         if len(self._modelListWidget.selectedItems()) > 1:
             self._mutliSelected = True
