@@ -263,7 +263,7 @@ class MainWidget(MainWidgetUI):
 
         for index in range(self._avResListWidget.count()):
             item = self._avResListWidget.item(index)
-            if item.text()=='Offloaded':
+            if str(item.text())=='Offloaded':
                 self._avResListWidget.setCurrentRow(index)
                 item.setCheckState(2)
             else:
