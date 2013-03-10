@@ -21,8 +21,6 @@ from widgets import MainWidgetUI, TextWidget, HelpWidget, StyleSheet, RecentFile
 from scntocReader import ScenetocReader
 import helpers
 import msgHandler
-from logger import Logger
-
 WIN_TITLE = "Scenetoc Res Manager"
 
 class MainWidget(MainWidgetUI):
@@ -445,7 +443,7 @@ class MainWidget(MainWidgetUI):
     def _writeScntoc(self, suppressMsg=False):
         if not self._file:
             return
-        
+
         if not self._dataChanged:
             if not suppressMsg:
                 msgHandler._pop(self, 5)
@@ -464,7 +462,7 @@ class MainWidget(MainWidgetUI):
         self._sr.write()
 
         self._dataChanged = False
-        
+
         if not suppressMsg:
             QtCore.QCoreApplication.instance().quit()
 
@@ -585,9 +583,14 @@ class MainWindow(QtGui.QMainWindow):
         ss._writePrefs(pref=theme)
         ss.setColor(self._mainWidget)
         ss.setColor(self, app= QtCore.QCoreApplication.instance())
-        
+
     def _fileOpenMappedSlot(self, inFile):
-        #Logger.info('this was called')
+        if not os.path.exists(inFile):
+            msgHandler._pop(self, 6, extraArgs=[inFile])
+            self._recentFiles._removeFile(inFile)
+            self._updateRecentMenu()
+            return
+
         mw = self._mainWidget
 
         mw._writeScntoc(suppressMsg=True)
@@ -598,8 +601,8 @@ class MainWindow(QtGui.QMainWindow):
 
         mw.load(inFile)
         mw.run()
- 
-        self._recentFiles._writeRecent(inFile)
+
+        self._recentFiles._addFile(inFile)
         self._updateRecentMenu()
         self.setWindowTitle("%s      %s" % (WIN_TITLE, inFile))
 
@@ -618,8 +621,8 @@ class MainWindow(QtGui.QMainWindow):
 
         mw.load(f)
         mw.run()
- 
-        self._recentFiles._writeRecent(f)
+
+        self._recentFiles._addFile(f)
         self._updateRecentMenu()
         self.setWindowTitle("%s      %s" % (WIN_TITLE, inFile))
 

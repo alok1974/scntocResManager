@@ -22,7 +22,7 @@ IS_QUESTION = 1
 YES = QtGui.QMessageBox.Yes
 NO = QtGui.QMessageBox.No
 LEADING_SPACE = 7
-PARA_WIDTH = 80
+PARA_WIDTH = 55
 
 ENUM_CODE = {
                 # Messages
@@ -30,6 +30,7 @@ ENUM_CODE = {
                 3: ('You need to have at least one res selected to apply the filer.', IS_MSG),
                 4: ('No Models with %s combination of filters.', IS_MSG),
                 5: ('There are no changes to save.', IS_MSG),
+                6: ('The file path - %s does not exist !. This path will be removed from the recent files list.', IS_MSG),                                
 
                 # Questions
                 101: ('Do you want to offoad all models ?', IS_QUESTION),
@@ -54,7 +55,22 @@ def _addArgs(inStr, inArgs=[]):
     return f
 
 def _makePara(inText):
-    words = inText.split(" ")
+    allWords = inText.split(" ")
+    
+    words = []
+    for word in allWords:
+        if '/' in word:
+            allPWords = word.split('/')
+            for index, pWord in enumerate(allPWords):
+                if index==len(allPWords) - 1:
+                    nWord = pWord
+                else:
+                    nWord = '%s/' % pWord
+                
+                words.append(nWord)
+        else:
+            words.append(word)
+    
     finalStr = ''
     finalStr = '\n'
     finalStr += ' ' * LEADING_SPACE
@@ -74,9 +90,8 @@ def _makePara(inText):
     return finalStr
 
 def _wrapMsg(inMsg, args=[]):
-    msg = _makePara(inMsg)
-
-    msg = _addArgs(msg, inArgs=args)
+    msg = _addArgs(inMsg, inArgs=args)
+    msg = _makePara(msg)
 
     return msg
 

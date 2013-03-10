@@ -27,7 +27,7 @@ class RecentFiles(object):
         super(RecentFiles, self).__init__(*args, **kwargs)
         self.recentFile = os.path.join(ROOT_DIR, 'prefs', 'recentfiles')
         self.files = []
-        self.maxFiles = 10
+        self.maxFiles = 5
 
     def _createRecent(self):
         with open(self.recentFile, 'w') as f:
@@ -36,33 +36,42 @@ class RecentFiles(object):
     def _fetchRecent(self):
         if not os.path.exists(self.recentFile):
             self._createRecent()
-        
+
         t = ''
         with open(self.recentFile, 'r') as f:
             t = f.read()
-        
+
         self.files = t.split('"')
-        
+
         # Cleaning any empty values
         self.files = [f for f in self.files if f]
 
         return self.files
 
-    def _writeRecent(self, file=''):
+    def _writeRecent(self):
+        with open(self.recentFile, 'w') as f:
+            f.write('"'.join(self.files))
+
+    def _addFile(self, toAdd):
         self._fetchRecent()
 
         if self.files:
             if len(self.files) > self.maxFiles:
                 return
-            
-        if file in self.files:
-            self.files.remove(file)
-        
-        self.files.insert(0, file)
 
-        with open(self.recentFile, 'w') as f:
-            f.write('"'.join(self.files))
-        
+        if toAdd in self.files:
+            self.files.remove(toAdd)
+
+        self.files.insert(0, toAdd)
+        self._writeRecent()
+
+
+    def _removeFile(self, toRemove):
+        files = self._fetchRecent()
+        files.remove(toRemove)
+
+        self._writeRecent()
+
 class StyleSheet(object):
     STYLESHEET_OPTIONS = ['dark', 'soft', 'maya', 'nuke',]
 
