@@ -12,11 +12,9 @@
 ##########################################################################################
 ##########################################################################################
 
-
 import os
 import sys
 from PyQt4 import QtCore, QtGui
-
 import helpers
 
 APP_STYLE = ("WindowsVista" if sys.platform.startswith('win')  else "Plastique")

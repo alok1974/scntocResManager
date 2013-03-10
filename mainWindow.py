@@ -15,7 +15,6 @@
 import sys
 import os
 import functools
-
 from PyQt4 import QtCore, QtGui
 
 from widgets import MainWidgetUI, TextWidget, HelpWidget, StyleSheet, RecentFiles
@@ -24,12 +23,15 @@ import helpers
 import msgHandler
 from logger import Logger
 
+WIN_TITLE = "Scenetoc Res Manager"
+
 class MainWidget(MainWidgetUI):
     def __init__(self, *args, **kwargs):
         super(MainWidget, self).__init__(*args, **kwargs)
 
         self._file = None
         self._dataChanged = False
+        self._connected = False
 
         # Setup Layout
         self._initUI()
@@ -40,7 +42,6 @@ class MainWidget(MainWidgetUI):
 
     def load(self, file):
         self._file = file
-
 
     def run(self):
         if not self._file:
@@ -72,14 +73,14 @@ class MainWidget(MainWidgetUI):
         self._hasFileloaded = True
 
         # Connect Signals
-        self._connectSignals()
+        if not self._connected:
+            self._connectSignals()
 
     def _initData(self):
         self._selectedModelName = ''
         self._selectedModelNames = []
         self._selectedResName = ''
         self._mutliSelected = False
-
         self._modelNames, self._modelNameColors = helpers._sortAndMakeColors(self._modelDict.keys())
         self._nbModels = len(self._modelNames)
         self._modelNameIndices = dict([(modelName, index) for index, modelName in enumerate(self._modelNames)])
@@ -173,6 +174,7 @@ class MainWidget(MainWidgetUI):
         self._cancelBtn.clicked.connect(self._cancelBtnOnClicked)
         self._applyFilterBtn.clicked.connect(self._applyFilterBtnOnClicked)
         self._resetFilterBtn.clicked.connect(self._resetFilterBtnOnClicked)
+        self._connected = True
 
     def _resolutionOnChanged(self):
         if not self._avResListWidget.currentItem():
@@ -226,7 +228,6 @@ class MainWidget(MainWidgetUI):
             self._dataChanged = self._setActiveResolution(item, self._selectedModelName)
 
         self._updateModelNamesWithRes(newRes=str(item.text()))
-
 
     def _updateModelNamesWithRes(self, newRes=''):
         selectionModel = self._modelListWidget.selectionModel()
@@ -474,9 +475,6 @@ class MainWidget(MainWidgetUI):
                     return 1
 
 class MainWindow(QtGui.QMainWindow):
-    
-    _fileOpenMappedSlot = QtCore.pyqtSignal(str)
-    
     def __init__(self, *args, **kwargs):
         super(MainWindow, self).__init__(*args, **kwargs)
 
@@ -539,7 +537,6 @@ class MainWindow(QtGui.QMainWindow):
         self._recentMenu = fileMenu.addMenu('&Recent Files')
         self._updateRecentMenu()
 
-
         editMenu = menubar.addMenu('&Edit')
         themeMenu = editMenu.addMenu('A&pply Themes')
         themeMenu.addAction(defaultStyleAction)
@@ -554,7 +551,7 @@ class MainWindow(QtGui.QMainWindow):
 
         self.move(100, 100)
 
-        self.setWindowTitle("Scenetoc Res Manager v 1.0")
+        self.setWindowTitle(WIN_TITLE)
 
         StyleSheet().setColor(self, app=QtCore.QCoreApplication.instance())
         StyleSheet().setColor(self._mainWidget)
@@ -603,7 +600,8 @@ class MainWindow(QtGui.QMainWindow):
         mw.run()
  
         self._recentFiles._writeRecent(inFile)
-        self._updateRecentMenu()        
+        self._updateRecentMenu()
+        self.setWindowTitle("%s      %s" % (WIN_TITLE, inFile))
 
     def _onFileOpen(self, inFile=''):
         mw = self._mainWidget
@@ -623,6 +621,8 @@ class MainWindow(QtGui.QMainWindow):
  
         self._recentFiles._writeRecent(f)
         self._updateRecentMenu()
+        self.setWindowTitle("%s      %s" % (WIN_TITLE, inFile))
+
 
     def _onAboutAction(self):
         self._showHelpWidget()
@@ -652,45 +652,3 @@ def run():
     am.show()
     am.raise_()
     app.exec_()
-
-"""
-// Set up actions and menus
-void	myMainWindow::setupMenus( void )
-{
-   QSignalMapper *signalMapper = new QSignalMapper( this );
- 
-   QMenuBar	*theMenuBar = menuBar();
-   QMenu	*helpMenu = theMenuBar->addMenu( tr( "Help" ) );
- 
-   QAction	*website = new QAction( tr( "Website" ), this );   
-   signalMapper->setMapping( website, "http://example.com" );
-   connect( website, SIGNAL(triggered()), signalMapper, SLOT(map()) );
-   helpMenu->addAction( website );
- 
-   QAction	*forums = new QAction( tr( "Support Forums Online" ), this );
-   signalMapper->setMapping( forums, "http://example.com/forum/" );
-   connect( forums, SIGNAL(triggered()), signalMapper, SLOT(map()) );
-   helpMenu->addAction( forums );
- 
-   connect( signalMapper, SIGNAL(mapped(const QString &)), SLOT(slotHelpMenuOpenURL(const QString &)) );
-}
- 
-// Open a given URL in the default browser
-//  NOTE: Do not pass inURL from user input unless you've validated it...
-void	myMainWindow::slotHelpMenuOpenURL( const QString &inURL )
-{
-    QApplication::setOverrideCursor( Qt::BusyCursor );
- 
-#ifdef Q_WS_X11
-   // NOTE: I don't compile for Linux, so this is untested
-   QProcess::startDetached( "kfmclient exec \"" + inURL + '"' );
-#elif defined( Q_WS_MAC )
-   QProcess::startDetached( "open \"" + inURL + '"' );
-#elif defined( Q_WS_WIN )
-   QProcess::startDetached( "rundll32.exe url.dll,FileProtocolHandler " + inURL );
-#endif
- 
-    QApplication::restoreOverrideCursor();
-}
-
-"""
