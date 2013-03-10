@@ -2,7 +2,8 @@
 
 *.komodoproject
 
-prefs/*.*
+prefs/currStyle
+prefs/recentFiles
 srcPsd/*.*
 
 # C extensions
