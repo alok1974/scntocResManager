@@ -14,12 +14,15 @@
 
 import sys
 import os
+import functools
 
 from PyQt4 import QtCore, QtGui
 
+from widgets import MainWidgetUI, TextWidget, HelpWidget, StyleSheet, RecentFiles
 from scntocReader import ScenetocReader
 import helpers
-from widgets import MainWidgetUI, TextWidget, HelpWidget, StyleSheet
+import msgHandler
+from logger import Logger
 
 class MainWidget(MainWidgetUI):
     def __init__(self, *args, **kwargs):
@@ -72,12 +75,6 @@ class MainWidget(MainWidgetUI):
         self._connectSignals()
 
     def _initData(self):
-        self._modelListWidget.clear()
-        self._avResListWidget.clear()
-        self._resIDLineEdit.setText('')
-        self._resPathLineEdit.setText('')
-        self._nbModelLabel.setText('')
-
         self._selectedModelName = ''
         self._selectedModelNames = []
         self._selectedResName = ''
@@ -85,27 +82,51 @@ class MainWidget(MainWidgetUI):
 
         self._modelNames, self._modelNameColors = helpers._sortAndMakeColors(self._modelDict.keys())
         self._nbModels = len(self._modelNames)
+        self._modelNameIndices = dict([(modelName, index) for index, modelName in enumerate(self._modelNames)])
         self._modelActiveResNames = dict([(k, v['activeResName']) for k, v in self._modelDict.iteritems()])
         self._modelActiveResNamesOriginal = dict([(k, v['activeResName']) for k, v in self._modelDict.iteritems()])
         self._modelResData = dict([(k, v['resData']) for k, v in self._modelDict.iteritems()])
         self._modelAvailableResNames = dict([(modelName, [d['resName']for d in modelData['resData']]) for modelName, modelData in self._modelDict.iteritems()])
+        self._allAvailableRes = helpers._flattenList([resNames for _, resNames in self._modelAvailableResNames.iteritems()], returnUnique=True)
 
     def _initWidgets(self):
+        self._modelListWidget.clear()
+        self._avResListWidget.clear()
+        self._filterListWidget.clear()
+        self._resIDLineEdit.setText('')
+        self._resPathLineEdit.setText('')
+        self._nbModelLabel.setText('')
+
         # Init Model Name List Widget
-        for modelName in self._modelNames:
-            w = QtGui.QListWidgetItem(modelName)
+        self._updateModelListWidget()
+
+        # Init Filter List Widget
+        self._updateAllResListWidget()
+
+        # Init Available Res Names List Widget
+        self._updateAvailableResolution()
+
+    def _updateModelListWidget(self, inModelNames=[]):
+        self._modelListWidget.clear()
+
+        if not inModelNames:
+            inModelNames = self._modelNames
+
+        for modelName in inModelNames:
+            modelNameStr = helpers._writeModelNameParts(modelName, self._modelActiveResNames[modelName])
+            w = QtGui.QListWidgetItem(modelNameStr)
             r, g, b = self._modelNameColors[modelName]
             w.setBackground(QtGui.QColor(r, g, b))
             w.setForeground(QtGui.QColor(0, 0, 0))
             self._modelListWidget.addItem(w)
 
-        self._modelListWidget.setCurrentRow(0)
-        self._selectedModelName = str(self._modelListWidget.currentItem().text())
-        self._activeResName = str(self._modelActiveResNames[self._selectedModelName])
-        self._nbModelLabel.setText('<b>  Total Models : </b><b>%s</b>' % str(self._nbModels))
 
-        # Init Available Res Names List Widget
-        self._updateAvailableResolution()
+        self._modelListWidget.setCurrentRow(0)
+        modelName, modelRes = helpers._getModelNameParts(str(self._modelListWidget.currentItem().text()))
+        self._selectedModelName = modelName
+        self._activeResName = modelRes
+
+        self._nbModelLabel.setText('<b>  <i>Total Models : %s</i></b>' % str(len(inModelNames)))
 
     def _updateAvailableResolution(self):
         self._avResListWidget.clear()
@@ -129,16 +150,29 @@ class MainWidget(MainWidgetUI):
         self._selectedResName = str(self._avResListWidget.currentItem().text())
         self._resolutionOnChanged()
 
+    def _updateAllResListWidget(self):
+        w = QtGui.QListWidgetItem('All')
+        w.setCheckState(2)
+        self._filterListWidget.addItem(w)
+
+        for resName in self._allAvailableRes:
+            w = QtGui.QListWidgetItem(resName)
+            w.setCheckState(2)
+            self._filterListWidget.addItem(w)
+
     # Signal Connections
     def _connectSignals(self):
         self._avResListWidget.currentItemChanged.connect(self._resolutionOnChanged)
         self._avResListWidget.itemChanged.connect(self._checkBoxOnClicked)
+        self._filterListWidget.itemChanged.connect(self._filterOnClicked)
         self._modelListWidget.itemSelectionChanged.connect(self._modelNameOnSelectionChange)
         self._offloadBtn.clicked.connect(self._offloadBtnOnClicked)
         self._viewBtn.clicked.connect(self._viewBtnOnClicked)
         self._resetBtn.clicked.connect(self._resetBtnOnClicked)
         self._applyBtn.clicked.connect(self._applyBtnOnClicked)
         self._cancelBtn.clicked.connect(self._cancelBtnOnClicked)
+        self._applyFilterBtn.clicked.connect(self._applyFilterBtnOnClicked)
+        self._resetFilterBtn.clicked.connect(self._resetFilterBtnOnClicked)
 
     def _resolutionOnChanged(self):
         if not self._avResListWidget.currentItem():
@@ -184,30 +218,75 @@ class MainWidget(MainWidgetUI):
                 self._avResListWidget.blockSignals(False)
 
         if self._mutliSelected:
+            dataChanged = False
             for modelName in self._selectedModelNames:
-                self._setActiveResolution(item, modelName)
+                dataChanged = self._setActiveResolution(item, modelName)
+            self._dataChanged = dataChanged
         else:
-            self._setActiveResolution(item, self._selectedModelName)
+            self._dataChanged = self._setActiveResolution(item, self._selectedModelName)
+
+        self._updateModelNamesWithRes(newRes=str(item.text()))
+
+
+    def _updateModelNamesWithRes(self, newRes=''):
+        selectionModel = self._modelListWidget.selectionModel()
+
+        indices = []
+        for qModelIndex in selectionModel.selectedRows():
+            index = qModelIndex.row()
+            modelNameItem = self._modelListWidget.item(index)
+            modelName, modelRes = helpers._getModelNameParts(str(modelNameItem.text()))
+            modelNameStr = helpers._writeModelNameParts(modelName, newRes)
+            modelNameItem.setText(modelNameStr)
 
     def _setActiveResolution(self, inItem, inModelName):
             clickedRes = str(inItem.text())
             currentRes = self._modelActiveResNamesOriginal[inModelName]
-            self._dataChanged = (clickedRes!=currentRes)
-            self._modelActiveResNames[inModelName] = str(inItem.text())
+            if clickedRes==currentRes:
+                return False
+            else:
+                self._modelActiveResNames[inModelName] = str(inItem.text())
+                return True
+
+    def _filterOnClicked(self, item):
+        self._handleFilterClicks(item)
+
+    def _handleFilterClicks(self, inItem, doubleClick=False):
+        if str(inItem.text())=='All':
+            for index in range(self._filterListWidget.count()):
+                thisItem = self._filterListWidget.item(index)
+                self._filterListWidget.blockSignals(True) # blocking signals so the func does not go in recursion
+                thisItem.setCheckState(inItem.checkState())
+                self._filterListWidget.blockSignals(False)
+
+            return
+
+        state = 2
+        for index in range(1, self._filterListWidget.count()):
+            thisItem = self._filterListWidget.item(index)
+            if thisItem.checkState()!=2:
+                state = 0
+
+        self._filterListWidget.blockSignals(True) # blocking signals so the func does not go in recursion
+        self._filterListWidget.item(0).setCheckState(state)
+        self._filterListWidget.blockSignals(False)
 
     def _modelNameOnSelectionChange(self):
-        if len(self._modelListWidget.selectedItems()) > 1:
+        nbSelectedModels = len(self._modelListWidget.selectedItems())
+        if nbSelectedModels > 1:
             self._mutliSelected = True
             self._modelNameOnChangedMulti()
             self._resPathLineEdit.setText("<multiple selection>")
             self._resIDLineEdit.setText("<multiple selection>")
+            self._nbSelectedModelLabel.setText('<b>  Selected Models : </b><b>%s</b>' % str(nbSelectedModels))
 
         else:
             self._mutliSelected = False
             self._modelNameOnChangedSingle()
+            self._nbSelectedModelLabel.setText('<b>  Selected Models : 1</b>')
 
     def _modelNameOnChangedMulti(self):
-        self._selectedModelNames = [str(item.text()) for item in self._modelListWidget.selectedItems()]
+        self._selectedModelNames = [helpers._getModelNameParts(str(item.text()))[0] for item in self._modelListWidget.selectedItems()]
         commonRes = helpers._getCommonRes(self._selectedModelNames, self._modelAvailableResNames)
 
         if not commonRes:
@@ -235,7 +314,7 @@ class MainWidget(MainWidgetUI):
 
     def _modelNameOnChangedSingle(self):
         # Getting Selected Model Name
-        self._selectedModelName = str(self._modelListWidget.currentItem().text())
+        self._selectedModelName = helpers._getModelNameParts(str(self._modelListWidget.currentItem().text()))[0]
 
         # Updating Available Resolutions
         self._updateAvailableResolution()
@@ -244,30 +323,27 @@ class MainWidget(MainWidgetUI):
         reply = QtGui.QMessageBox.question(self, title,
                          msg, QtGui.QMessageBox.Yes, QtGui.QMessageBox.No)
 
-        if reply == QtGui.QMessageBox.Yes:
+        if reply==QtGui.QMessageBox.Yes:
             return True
 
         return False
 
     def _offloadBtnOnClicked(self):
-        msg = '\n'
-        msg += '        Do you want to offoad all models ?           '
-        msg += '\n\n'
-        title = 'Offload All Models ?'
-        if not self._showDialog(title, msg):
+        if not msgHandler._pop(self, 101):
             return
-
 
         for modelName in self._modelActiveResNames.keys():
             self._modelActiveResNames[modelName] = 'Offloaded'
 
         for index in range(self._avResListWidget.count()):
             item = self._avResListWidget.item(index)
-            if str(item.text())=='Offloaded':
+            if item.text()=='Offloaded':
                 self._avResListWidget.setCurrentRow(index)
                 item.setCheckState(2)
             else:
                 item.setCheckState(0)
+
+        self._resetFilterBtnOnClicked()
 
     def _viewBtnOnClicked(self):
         viewLogHeader = ''
@@ -306,44 +382,76 @@ class MainWidget(MainWidgetUI):
         self.tw.show()
 
     def _resetBtnOnClicked(self):
+        if not self._dataChanged:
+            msgHandler._pop(self, 1)
+            return
+
+        if not msgHandler._pop(self, 102):
+            return
+
         for modelName, res in self._modelActiveResNamesOriginal.iteritems():
             self._modelActiveResNames[modelName] = res
 
         self._dataChanged = False
-
         self._updateAvailableResolution()
+        self._resetFilterBtnOnClicked()
 
+    def _applyFilterBtnOnClicked(self):
+        allState = 0
+        selectedRes = []
+        for i in range(self._filterListWidget.count()):
+            item = self._filterListWidget.item(i)
+            state = item.checkState()
+            allState += state
+            if state==2:
+                selectedRes.append(str(item.text()))
+
+        if not allState:
+            msgHandler._pop(self, 3)
+            return
+
+        selectedResToModel = helpers._reverseDict(self._modelActiveResNames)
+
+        modelNames = []
+        for resName in selectedRes:
+            modelsWithThisRes = selectedResToModel.get(resName)
+            if modelsWithThisRes:
+                modelNames.extend(modelsWithThisRes)
+
+        modelNames = list(set(modelNames))
+
+        modelNames, _ = helpers._sortAndMakeColors(modelNames)
+
+        if not modelNames:
+            msgHandler._pop(self, 4, extraArgs=[selectedRes])
+            return
+
+        self._updateModelListWidget(inModelNames=modelNames)
+
+    def _resetFilterBtnOnClicked(self):
+        self._filterListWidget.item(0).setCheckState(2)
+        self._updateModelListWidget()
 
     def _applyBtnOnClicked(self):
         self._writeScntoc()
-        QtCore.QCoreApplication.instance().quit()
 
     def _cancelBtnOnClicked(self):
-        msg = '\n'
-        msg += '        Do you want to exit without saving your changes ?           '
-        msg += '\n\n'
-        title = 'Exit without save ?'
-
-        if self._file:
-            if self._dataChanged:
-                if not self._showDialog(title, msg):
-                    return
+        if self._closeMsg()==1:
+            return
 
         QtCore.QCoreApplication.instance().quit()
 
-    def _writeScntoc(self):
+    def _writeScntoc(self, suppressMsg=False):
         if not self._file:
             return
-
+        
         if not self._dataChanged:
+            if not suppressMsg:
+                msgHandler._pop(self, 5)
+
             return
 
-        msg = '\n'
-        msg += '        Do you want to write changes to the loaded file ?           '
-        msg += '\n\n'
-        title = 'Save current file ?'
-
-        if not self._showDialog(title, msg):
+        if not msgHandler._pop(self, 103):
             return
 
         for modelName, activeResName in self._modelActiveResNames.iteritems():
@@ -354,13 +462,28 @@ class MainWidget(MainWidgetUI):
         # Writing changes to the scntoc file
         self._sr.write()
 
+        self._dataChanged = False
+        
+        if not suppressMsg:
+            QtCore.QCoreApplication.instance().quit()
+
+    def _closeMsg(self):
+        if self._file:
+            if self._dataChanged:
+                if not msgHandler._pop(self, 104):
+                    return 1
+
 class MainWindow(QtGui.QMainWindow):
+    
+    _fileOpenMappedSlot = QtCore.pyqtSignal(str)
+    
     def __init__(self, *args, **kwargs):
         super(MainWindow, self).__init__(*args, **kwargs)
 
         mainWidget = QtGui.QFrame()
 
         self._mainWidget = MainWidget()
+        self._recentFiles = RecentFiles()
 
         mainLayout = QtGui.QVBoxLayout()
         mainLayout.addWidget(self._mainWidget, 100)
@@ -409,8 +532,13 @@ class MainWindow(QtGui.QMainWindow):
         self.statusBar()
 
         menubar = self.menuBar()
+
         fileMenu = menubar.addMenu('&File')
         fileMenu.addAction(fileOpenAction)
+
+        self._recentMenu = fileMenu.addMenu('&Recent Files')
+        self._updateRecentMenu()
+
 
         editMenu = menubar.addMenu('&Edit')
         themeMenu = editMenu.addMenu('A&pply Themes')
@@ -430,6 +558,15 @@ class MainWindow(QtGui.QMainWindow):
 
         StyleSheet().setColor(self, app=QtCore.QCoreApplication.instance())
         StyleSheet().setColor(self._mainWidget)
+
+    def _updateRecentMenu(self):
+        self._recentMenu.clear()
+        files = self._recentFiles._fetchRecent()
+
+        for file in files:
+            fileAction = QtGui.QAction(file, self)
+            fileAction.triggered.connect(functools.partial(self._fileOpenMappedSlot, file))
+            self._recentMenu.addAction(fileAction)
 
     def _onDefaultStyleAction(self):
         self._setTheme('')
@@ -451,22 +588,41 @@ class MainWindow(QtGui.QMainWindow):
         ss._writePrefs(pref=theme)
         ss.setColor(self._mainWidget)
         ss.setColor(self, app= QtCore.QCoreApplication.instance())
-
-    def _onFileOpen(self):
+        
+    def _fileOpenMappedSlot(self, inFile):
+        #Logger.info('this was called')
         mw = self._mainWidget
 
-        mw._writeScntoc()
+        mw._writeScntoc(suppressMsg=True)
 
         mw._dataChanged = False
         mw._file = None
         mw._hasFileloaded = False
 
+        mw.load(inFile)
+        mw.run()
+ 
+        self._recentFiles._writeRecent(inFile)
+        self._updateRecentMenu()        
 
-        fg = QtGui.QFileDialog()
-        f = str(fg.getOpenFileName(self, 'Open file', '', "Scntoc File (*.scntoc)"))
+    def _onFileOpen(self, inFile=''):
+        mw = self._mainWidget
+
+        mw._writeScntoc(suppressMsg=True)
+
+        mw._dataChanged = False
+        mw._file = None
+        mw._hasFileloaded = False
+
+        if not inFile:
+            fg = QtGui.QFileDialog()
+            f = str(fg.getOpenFileName(self, 'Open file', '', "Scntoc File (*.scntoc)"))
 
         mw.load(f)
         mw.run()
+ 
+        self._recentFiles._writeRecent(f)
+        self._updateRecentMenu()
 
     def _onAboutAction(self):
         self._showHelpWidget()
@@ -483,9 +639,58 @@ class MainWindow(QtGui.QMainWindow):
 
         self.hw.show()
 
+    def closeEvent(self, event):
+        mw = self._mainWidget
+        if mw._file:
+            if mw._dataChanged:
+                if not msgHandler._pop(self, 104):
+                    event.ignore()
+
 def run():
     app = QtGui.QApplication(sys.argv)
     am = MainWindow()
     am.show()
     am.raise_()
     app.exec_()
+
+"""
+// Set up actions and menus
+void	myMainWindow::setupMenus( void )
+{
+   QSignalMapper *signalMapper = new QSignalMapper( this );
+ 
+   QMenuBar	*theMenuBar = menuBar();
+   QMenu	*helpMenu = theMenuBar->addMenu( tr( "Help" ) );
+ 
+   QAction	*website = new QAction( tr( "Website" ), this );   
+   signalMapper->setMapping( website, "http://example.com" );
+   connect( website, SIGNAL(triggered()), signalMapper, SLOT(map()) );
+   helpMenu->addAction( website );
+ 
+   QAction	*forums = new QAction( tr( "Support Forums Online" ), this );
+   signalMapper->setMapping( forums, "http://example.com/forum/" );
+   connect( forums, SIGNAL(triggered()), signalMapper, SLOT(map()) );
+   helpMenu->addAction( forums );
+ 
+   connect( signalMapper, SIGNAL(mapped(const QString &)), SLOT(slotHelpMenuOpenURL(const QString &)) );
+}
+ 
+// Open a given URL in the default browser
+//  NOTE: Do not pass inURL from user input unless you've validated it...
+void	myMainWindow::slotHelpMenuOpenURL( const QString &inURL )
+{
+    QApplication::setOverrideCursor( Qt::BusyCursor );
+ 
+#ifdef Q_WS_X11
+   // NOTE: I don't compile for Linux, so this is untested
+   QProcess::startDetached( "kfmclient exec \"" + inURL + '"' );
+#elif defined( Q_WS_MAC )
+   QProcess::startDetached( "open \"" + inURL + '"' );
+#elif defined( Q_WS_WIN )
+   QProcess::startDetached( "rundll32.exe url.dll,FileProtocolHandler " + inURL );
+#endif
+ 
+    QApplication::restoreOverrideCursor();
+}
+
+"""

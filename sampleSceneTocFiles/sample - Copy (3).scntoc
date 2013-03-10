@@ -1,0 +1,624 @@
+<?xml version="1.0" ?><xsi_file syntax_version="2.0" type="SceneTOC" xsi_version="10.5.98.0">
+   <Models>
+      <Model active_resolution="0" name="char_B_2">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\MOD_LR.emdl" id="1" name="MOD_LR"/>
+         <resolution href="file://C:\temp\charRes\PRE_XR.emdl" id="2" name="PRE_XR"/>
+         <resolution href="file://C:\temp\charRes\LDV_LR.emdl" id="3" name="LDV_LR"/>
+         <resolution href="file://C:\temp\charRes\LAY_PH.emdl" id="4" name="LAY_PH"/>
+      </Model>
+      <Model active_resolution="0" name="char_B_5">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\MOD_LR.emdl" id="1" name="MOD_LR"/>
+         <resolution href="file://C:\temp\charRes\PRE_XR.emdl" id="2" name="PRE_XR"/>
+         <resolution href="file://C:\temp\charRes\LDV_LR.emdl" id="3" name="LDV_LR"/>
+         <resolution href="file://C:\temp\charRes\LAY_PH.emdl" id="4" name="LAY_PH"/>
+      </Model>
+      <Model active_resolution="0" name="prop_B19">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\SIM_LR.emdl" id="1" name="SIM_LR"/>
+         <resolution href="file://C:\temp\charRes\LIT_MR.emdl" id="2" name="LIT_MR"/>
+         <resolution href="file://C:\temp\charRes\LDV_LR.emdl" id="3" name="LDV_LR"/>
+         <resolution href="file://C:\temp\charRes\RIG_XR.emdl" id="4" name="RIG_XR"/>
+      </Model>
+      <Model active_resolution="0" name="prop_B10">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\SIM_LR.emdl" id="1" name="SIM_LR"/>
+         <resolution href="file://C:\temp\charRes\LIT_MR.emdl" id="2" name="LIT_MR"/>
+         <resolution href="file://C:\temp\charRes\LDV_LR.emdl" id="3" name="LDV_LR"/>
+         <resolution href="file://C:\temp\charRes\RIG_XR.emdl" id="4" name="RIG_XR"/>
+      </Model>
+      <Model active_resolution="0" name="prop_B5">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\SIM_LR.emdl" id="1" name="SIM_LR"/>
+         <resolution href="file://C:\temp\charRes\LIT_MR.emdl" id="2" name="LIT_MR"/>
+         <resolution href="file://C:\temp\charRes\LDV_LR.emdl" id="3" name="LDV_LR"/>
+         <resolution href="file://C:\temp\charRes\RIG_XR.emdl" id="4" name="RIG_XR"/>
+      </Model>
+      <Model active_resolution="0" name="char_A_47">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\SIM_LR.emdl" id="1" name="SIM_LR"/>
+         <resolution href="file://C:\temp\charRes\LDV_XR.emdl" id="2" name="LDV_XR"/>
+         <resolution href="file://C:\temp\charRes\LAY_PH.emdl" id="3" name="LAY_PH"/>
+      </Model>
+      <Model active_resolution="0" name="prop_B44">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\SIM_LR.emdl" id="1" name="SIM_LR"/>
+         <resolution href="file://C:\temp\charRes\LIT_MR.emdl" id="2" name="LIT_MR"/>
+         <resolution href="file://C:\temp\charRes\LDV_LR.emdl" id="3" name="LDV_LR"/>
+         <resolution href="file://C:\temp\charRes\RIG_XR.emdl" id="4" name="RIG_XR"/>
+      </Model>
+      <Model active_resolution="0" name="prop_B26">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\SIM_LR.emdl" id="1" name="SIM_LR"/>
+         <resolution href="file://C:\temp\charRes\LIT_MR.emdl" id="2" name="LIT_MR"/>
+         <resolution href="file://C:\temp\charRes\LDV_LR.emdl" id="3" name="LDV_LR"/>
+         <resolution href="file://C:\temp\charRes\RIG_XR.emdl" id="4" name="RIG_XR"/>
+      </Model>
+      <Model active_resolution="0" name="char_B_36">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\MOD_LR.emdl" id="1" name="MOD_LR"/>
+         <resolution href="file://C:\temp\charRes\PRE_XR.emdl" id="2" name="PRE_XR"/>
+         <resolution href="file://C:\temp\charRes\LDV_LR.emdl" id="3" name="LDV_LR"/>
+         <resolution href="file://C:\temp\charRes\LAY_PH.emdl" id="4" name="LAY_PH"/>
+      </Model>
+      <Model active_resolution="0" name="char_B_33">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\MOD_LR.emdl" id="1" name="MOD_LR"/>
+         <resolution href="file://C:\temp\charRes\PRE_XR.emdl" id="2" name="PRE_XR"/>
+         <resolution href="file://C:\temp\charRes\LDV_LR.emdl" id="3" name="LDV_LR"/>
+         <resolution href="file://C:\temp\charRes\LAY_PH.emdl" id="4" name="LAY_PH"/>
+      </Model>
+      <Model active_resolution="0" name="char_B_102">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\MOD_LR.emdl" id="1" name="MOD_LR"/>
+         <resolution href="file://C:\temp\charRes\PRE_XR.emdl" id="2" name="PRE_XR"/>
+         <resolution href="file://C:\temp\charRes\LDV_LR.emdl" id="3" name="LDV_LR"/>
+         <resolution href="file://C:\temp\charRes\LAY_PH.emdl" id="4" name="LAY_PH"/>
+      </Model>
+      <Model active_resolution="0" name="char_B_87">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\MOD_LR.emdl" id="1" name="MOD_LR"/>
+         <resolution href="file://C:\temp\charRes\PRE_XR.emdl" id="2" name="PRE_XR"/>
+         <resolution href="file://C:\temp\charRes\LDV_LR.emdl" id="3" name="LDV_LR"/>
+         <resolution href="file://C:\temp\charRes\LAY_PH.emdl" id="4" name="LAY_PH"/>
+      </Model>
+      <Model active_resolution="0" name="char_B_81">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\MOD_LR.emdl" id="1" name="MOD_LR"/>
+         <resolution href="file://C:\temp\charRes\PRE_XR.emdl" id="2" name="PRE_XR"/>
+         <resolution href="file://C:\temp\charRes\LDV_LR.emdl" id="3" name="LDV_LR"/>
+         <resolution href="file://C:\temp\charRes\LAY_PH.emdl" id="4" name="LAY_PH"/>
+      </Model>
+      <Model active_resolution="0" name="myModel6">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\LDV_XR.emdl" id="1" name="LDV_XR"/>
+         <resolution href="file://C:\temp\charRes\RIG_XR.emdl" id="2" name="RIG_XR"/>
+      </Model>
+      <Model active_resolution="0" name="myModel">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\LDV_XR.emdl" id="1" name="LDV_XR"/>
+         <resolution href="file://C:\temp\charRes\RIG_XR.emdl" id="2" name="RIG_XR"/>
+      </Model>
+      <Model active_resolution="0" name="prop_B76">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\SIM_LR.emdl" id="1" name="SIM_LR"/>
+         <resolution href="file://C:\temp\charRes\LIT_MR.emdl" id="2" name="LIT_MR"/>
+         <resolution href="file://C:\temp\charRes\LDV_LR.emdl" id="3" name="LDV_LR"/>
+         <resolution href="file://C:\temp\charRes\RIG_XR.emdl" id="4" name="RIG_XR"/>
+      </Model>
+      <Model active_resolution="0" name="char_A_4">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\SIM_LR.emdl" id="1" name="SIM_LR"/>
+         <resolution href="file://C:\temp\charRes\LDV_XR.emdl" id="2" name="LDV_XR"/>
+         <resolution href="file://C:\temp\charRes\LAY_PH.emdl" id="3" name="LAY_PH"/>
+      </Model>
+      <Model active_resolution="0" name="char_A_2">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\SIM_LR.emdl" id="1" name="SIM_LR"/>
+         <resolution href="file://C:\temp\charRes\LDV_XR.emdl" id="2" name="LDV_XR"/>
+         <resolution href="file://C:\temp\charRes\LAY_PH.emdl" id="3" name="LAY_PH"/>
+      </Model>
+      <Model active_resolution="0" name="char_A_0">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\SIM_LR.emdl" id="1" name="SIM_LR"/>
+         <resolution href="file://C:\temp\charRes\LDV_XR.emdl" id="2" name="LDV_XR"/>
+         <resolution href="file://C:\temp\charRes\LAY_PH.emdl" id="3" name="LAY_PH"/>
+      </Model>
+      <Model active_resolution="0" name="char_A_35">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\SIM_LR.emdl" id="1" name="SIM_LR"/>
+         <resolution href="file://C:\temp\charRes\LDV_XR.emdl" id="2" name="LDV_XR"/>
+         <resolution href="file://C:\temp\charRes\LAY_PH.emdl" id="3" name="LAY_PH"/>
+      </Model>
+      <Model active_resolution="0" name="char_A_32">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\SIM_LR.emdl" id="1" name="SIM_LR"/>
+         <resolution href="file://C:\temp\charRes\LDV_XR.emdl" id="2" name="LDV_XR"/>
+         <resolution href="file://C:\temp\charRes\LAY_PH.emdl" id="3" name="LAY_PH"/>
+      </Model>
+      <Model active_resolution="0" name="char_A_29">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\SIM_LR.emdl" id="1" name="SIM_LR"/>
+         <resolution href="file://C:\temp\charRes\LDV_XR.emdl" id="2" name="LDV_XR"/>
+         <resolution href="file://C:\temp\charRes\LAY_PH.emdl" id="3" name="LAY_PH"/>
+      </Model>
+      <Model active_resolution="0" name="char_B_4">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\MOD_LR.emdl" id="1" name="MOD_LR"/>
+         <resolution href="file://C:\temp\charRes\PRE_XR.emdl" id="2" name="PRE_XR"/>
+         <resolution href="file://C:\temp\charRes\LDV_LR.emdl" id="3" name="LDV_LR"/>
+         <resolution href="file://C:\temp\charRes\LAY_PH.emdl" id="4" name="LAY_PH"/>
+      </Model>
+      <Model active_resolution="0" name="prop_B70">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\SIM_LR.emdl" id="1" name="SIM_LR"/>
+         <resolution href="file://C:\temp\charRes\LIT_MR.emdl" id="2" name="LIT_MR"/>
+         <resolution href="file://C:\temp\charRes\LDV_LR.emdl" id="3" name="LDV_LR"/>
+         <resolution href="file://C:\temp\charRes\RIG_XR.emdl" id="4" name="RIG_XR"/>
+      </Model>
+      <Model active_resolution="0" name="prop_B49">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\SIM_LR.emdl" id="1" name="SIM_LR"/>
+         <resolution href="file://C:\temp\charRes\LIT_MR.emdl" id="2" name="LIT_MR"/>
+         <resolution href="file://C:\temp\charRes\LDV_LR.emdl" id="3" name="LDV_LR"/>
+         <resolution href="file://C:\temp\charRes\RIG_XR.emdl" id="4" name="RIG_XR"/>
+      </Model>
+      <Model active_resolution="0" name="prop_B1">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\SIM_LR.emdl" id="1" name="SIM_LR"/>
+         <resolution href="file://C:\temp\charRes\LIT_MR.emdl" id="2" name="LIT_MR"/>
+         <resolution href="file://C:\temp\charRes\LDV_LR.emdl" id="3" name="LDV_LR"/>
+         <resolution href="file://C:\temp\charRes\RIG_XR.emdl" id="4" name="RIG_XR"/>
+      </Model>
+      <Model active_resolution="0" name="prop_B4">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\SIM_LR.emdl" id="1" name="SIM_LR"/>
+         <resolution href="file://C:\temp\charRes\LIT_MR.emdl" id="2" name="LIT_MR"/>
+         <resolution href="file://C:\temp\charRes\LDV_LR.emdl" id="3" name="LDV_LR"/>
+         <resolution href="file://C:\temp\charRes\RIG_XR.emdl" id="4" name="RIG_XR"/>
+      </Model>
+      <Model active_resolution="0" name="char_A_48">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\SIM_LR.emdl" id="1" name="SIM_LR"/>
+         <resolution href="file://C:\temp\charRes\LDV_XR.emdl" id="2" name="LDV_XR"/>
+         <resolution href="file://C:\temp\charRes\LAY_PH.emdl" id="3" name="LAY_PH"/>
+      </Model>
+      <Model active_resolution="0" name="prop_B42">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\SIM_LR.emdl" id="1" name="SIM_LR"/>
+         <resolution href="file://C:\temp\charRes\LIT_MR.emdl" id="2" name="LIT_MR"/>
+         <resolution href="file://C:\temp\charRes\LDV_LR.emdl" id="3" name="LDV_LR"/>
+         <resolution href="file://C:\temp\charRes\RIG_XR.emdl" id="4" name="RIG_XR"/>
+      </Model>
+      <Model active_resolution="0" name="prop_B21">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\SIM_LR.emdl" id="1" name="SIM_LR"/>
+         <resolution href="file://C:\temp\charRes\LIT_MR.emdl" id="2" name="LIT_MR"/>
+         <resolution href="file://C:\temp\charRes\LDV_LR.emdl" id="3" name="LDV_LR"/>
+         <resolution href="file://C:\temp\charRes\RIG_XR.emdl" id="4" name="RIG_XR"/>
+      </Model>
+      <Model active_resolution="0" name="char_B_37">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\MOD_LR.emdl" id="1" name="MOD_LR"/>
+         <resolution href="file://C:\temp\charRes\PRE_XR.emdl" id="2" name="PRE_XR"/>
+         <resolution href="file://C:\temp\charRes\LDV_LR.emdl" id="3" name="LDV_LR"/>
+         <resolution href="file://C:\temp\charRes\LAY_PH.emdl" id="4" name="LAY_PH"/>
+      </Model>
+      <Model active_resolution="0" name="char_B_34">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\MOD_LR.emdl" id="1" name="MOD_LR"/>
+         <resolution href="file://C:\temp\charRes\PRE_XR.emdl" id="2" name="PRE_XR"/>
+         <resolution href="file://C:\temp\charRes\LDV_LR.emdl" id="3" name="LDV_LR"/>
+         <resolution href="file://C:\temp\charRes\LAY_PH.emdl" id="4" name="LAY_PH"/>
+      </Model>
+      <Model active_resolution="0" name="char_B_31">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\MOD_LR.emdl" id="1" name="MOD_LR"/>
+         <resolution href="file://C:\temp\charRes\PRE_XR.emdl" id="2" name="PRE_XR"/>
+         <resolution href="file://C:\temp\charRes\LDV_LR.emdl" id="3" name="LDV_LR"/>
+         <resolution href="file://C:\temp\charRes\LAY_PH.emdl" id="4" name="LAY_PH"/>
+      </Model>
+      <Model active_resolution="0" name="char_B_85">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\MOD_LR.emdl" id="1" name="MOD_LR"/>
+         <resolution href="file://C:\temp\charRes\PRE_XR.emdl" id="2" name="PRE_XR"/>
+         <resolution href="file://C:\temp\charRes\LDV_LR.emdl" id="3" name="LDV_LR"/>
+         <resolution href="file://C:\temp\charRes\LAY_PH.emdl" id="4" name="LAY_PH"/>
+      </Model>
+      <Model active_resolution="0" name="char_B_82">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\MOD_LR.emdl" id="1" name="MOD_LR"/>
+         <resolution href="file://C:\temp\charRes\PRE_XR.emdl" id="2" name="PRE_XR"/>
+         <resolution href="file://C:\temp\charRes\LDV_LR.emdl" id="3" name="LDV_LR"/>
+         <resolution href="file://C:\temp\charRes\LAY_PH.emdl" id="4" name="LAY_PH"/>
+      </Model>
+      <Model active_resolution="0" name="myModel7">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\LDV_XR.emdl" id="1" name="LDV_XR"/>
+         <resolution href="file://C:\temp\charRes\RIG_XR.emdl" id="2" name="RIG_XR"/>
+      </Model>
+      <Model active_resolution="0" name="char_B_79">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\MOD_LR.emdl" id="1" name="MOD_LR"/>
+         <resolution href="file://C:\temp\charRes\PRE_XR.emdl" id="2" name="PRE_XR"/>
+         <resolution href="file://C:\temp\charRes\LDV_LR.emdl" id="3" name="LDV_LR"/>
+         <resolution href="file://C:\temp\charRes\LAY_PH.emdl" id="4" name="LAY_PH"/>
+      </Model>
+      <Model active_resolution="0" name="myModel4">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\LDV_XR.emdl" id="1" name="LDV_XR"/>
+         <resolution href="file://C:\temp\charRes\RIG_XR.emdl" id="2" name="RIG_XR"/>
+      </Model>
+      <Model active_resolution="0" name="myModel1">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\LDV_XR.emdl" id="1" name="LDV_XR"/>
+         <resolution href="file://C:\temp\charRes\RIG_XR.emdl" id="2" name="RIG_XR"/>
+      </Model>
+      <Model active_resolution="0" name="prop_B77">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\SIM_LR.emdl" id="1" name="SIM_LR"/>
+         <resolution href="file://C:\temp\charRes\LIT_MR.emdl" id="2" name="LIT_MR"/>
+         <resolution href="file://C:\temp\charRes\LDV_LR.emdl" id="3" name="LDV_LR"/>
+         <resolution href="file://C:\temp\charRes\RIG_XR.emdl" id="4" name="RIG_XR"/>
+      </Model>
+      <Model active_resolution="0" name="prop_B74">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\SIM_LR.emdl" id="1" name="SIM_LR"/>
+         <resolution href="file://C:\temp\charRes\LIT_MR.emdl" id="2" name="LIT_MR"/>
+         <resolution href="file://C:\temp\charRes\LDV_LR.emdl" id="3" name="LDV_LR"/>
+         <resolution href="file://C:\temp\charRes\RIG_XR.emdl" id="4" name="RIG_XR"/>
+      </Model>
+      <Model active_resolution="0" name="prop_B71">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\SIM_LR.emdl" id="1" name="SIM_LR"/>
+         <resolution href="file://C:\temp\charRes\LIT_MR.emdl" id="2" name="LIT_MR"/>
+         <resolution href="file://C:\temp\charRes\LDV_LR.emdl" id="3" name="LDV_LR"/>
+         <resolution href="file://C:\temp\charRes\RIG_XR.emdl" id="4" name="RIG_XR"/>
+      </Model>
+      <Model active_resolution="0" name="char_A_3">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\SIM_LR.emdl" id="1" name="SIM_LR"/>
+         <resolution href="file://C:\temp\charRes\LDV_XR.emdl" id="2" name="LDV_XR"/>
+         <resolution href="file://C:\temp\charRes\LAY_PH.emdl" id="3" name="LAY_PH"/>
+      </Model>
+      <Model active_resolution="0" name="char_A_7">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\SIM_LR.emdl" id="1" name="SIM_LR"/>
+         <resolution href="file://C:\temp\charRes\LDV_XR.emdl" id="2" name="LDV_XR"/>
+         <resolution href="file://C:\temp\charRes\LAY_PH.emdl" id="3" name="LAY_PH"/>
+      </Model>
+      <Model active_resolution="0" name="char_A_33">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\SIM_LR.emdl" id="1" name="SIM_LR"/>
+         <resolution href="file://C:\temp\charRes\LDV_XR.emdl" id="2" name="LDV_XR"/>
+         <resolution href="file://C:\temp\charRes\LAY_PH.emdl" id="3" name="LAY_PH"/>
+      </Model>
+      <Model active_resolution="0" name="char_A_30">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\SIM_LR.emdl" id="1" name="SIM_LR"/>
+         <resolution href="file://C:\temp\charRes\LDV_XR.emdl" id="2" name="LDV_XR"/>
+         <resolution href="file://C:\temp\charRes\LAY_PH.emdl" id="3" name="LAY_PH"/>
+      </Model>
+      <Model active_resolution="0" name="char_A_27">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\SIM_LR.emdl" id="1" name="SIM_LR"/>
+         <resolution href="file://C:\temp\charRes\LDV_XR.emdl" id="2" name="LDV_XR"/>
+         <resolution href="file://C:\temp\charRes\LAY_PH.emdl" id="3" name="LAY_PH"/>
+      </Model>
+      <Model active_resolution="0" name="char_A_24">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\SIM_LR.emdl" id="1" name="SIM_LR"/>
+         <resolution href="file://C:\temp\charRes\LDV_XR.emdl" id="2" name="LDV_XR"/>
+         <resolution href="file://C:\temp\charRes\LAY_PH.emdl" id="3" name="LAY_PH"/>
+      </Model>
+      <Model active_resolution="0" name="char_B_00">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\MOD_LR.emdl" id="1" name="MOD_LR"/>
+         <resolution href="file://C:\temp\charRes\PRE_XR.emdl" id="2" name="PRE_XR"/>
+         <resolution href="file://C:\temp\charRes\LDV_LR.emdl" id="3" name="LDV_LR"/>
+         <resolution href="file://C:\temp\charRes\LAY_PH.emdl" id="4" name="LAY_PH"/>
+      </Model>
+      <Model active_resolution="0" name="prop_B68">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\SIM_LR.emdl" id="1" name="SIM_LR"/>
+         <resolution href="file://C:\temp\charRes\LIT_MR.emdl" id="2" name="LIT_MR"/>
+         <resolution href="file://C:\temp\charRes\LDV_LR.emdl" id="3" name="LDV_LR"/>
+         <resolution href="file://C:\temp\charRes\RIG_XR.emdl" id="4" name="RIG_XR"/>
+      </Model>
+      <Model active_resolution="0" name="prop_B50">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\SIM_LR.emdl" id="1" name="SIM_LR"/>
+         <resolution href="file://C:\temp\charRes\LIT_MR.emdl" id="2" name="LIT_MR"/>
+         <resolution href="file://C:\temp\charRes\LDV_LR.emdl" id="3" name="LDV_LR"/>
+         <resolution href="file://C:\temp\charRes\RIG_XR.emdl" id="4" name="RIG_XR"/>
+      </Model>
+      <Model active_resolution="0" name="prop_B15">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\SIM_LR.emdl" id="1" name="SIM_LR"/>
+         <resolution href="file://C:\temp\charRes\LIT_MR.emdl" id="2" name="LIT_MR"/>
+         <resolution href="file://C:\temp\charRes\LDV_LR.emdl" id="3" name="LDV_LR"/>
+         <resolution href="file://C:\temp\charRes\RIG_XR.emdl" id="4" name="RIG_XR"/>
+      </Model>
+      <Model active_resolution="0" name="prop_B12">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\SIM_LR.emdl" id="1" name="SIM_LR"/>
+         <resolution href="file://C:\temp\charRes\LIT_MR.emdl" id="2" name="LIT_MR"/>
+         <resolution href="file://C:\temp\charRes\LDV_LR.emdl" id="3" name="LDV_LR"/>
+         <resolution href="file://C:\temp\charRes\RIG_XR.emdl" id="4" name="RIG_XR"/>
+      </Model>
+      <Model active_resolution="0" name="prop_B3">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\SIM_LR.emdl" id="1" name="SIM_LR"/>
+         <resolution href="file://C:\temp\charRes\LIT_MR.emdl" id="2" name="LIT_MR"/>
+         <resolution href="file://C:\temp\charRes\LDV_LR.emdl" id="3" name="LDV_LR"/>
+         <resolution href="file://C:\temp\charRes\RIG_XR.emdl" id="4" name="RIG_XR"/>
+      </Model>
+      <Model active_resolution="0" name="prop_B">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\SIM_LR.emdl" id="1" name="SIM_LR"/>
+         <resolution href="file://C:\temp\charRes\LIT_MR.emdl" id="2" name="LIT_MR"/>
+         <resolution href="file://C:\temp\charRes\LDV_LR.emdl" id="3" name="LDV_LR"/>
+         <resolution href="file://C:\temp\charRes\RIG_XR.emdl" id="4" name="RIG_XR"/>
+      </Model>
+      <Model active_resolution="0" name="char_A_46">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\SIM_LR.emdl" id="1" name="SIM_LR"/>
+         <resolution href="file://C:\temp\charRes\LDV_XR.emdl" id="2" name="LDV_XR"/>
+         <resolution href="file://C:\temp\charRes\LAY_PH.emdl" id="3" name="LAY_PH"/>
+      </Model>
+      <Model active_resolution="0" name="prop_B46">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\SIM_LR.emdl" id="1" name="SIM_LR"/>
+         <resolution href="file://C:\temp\charRes\LIT_MR.emdl" id="2" name="LIT_MR"/>
+         <resolution href="file://C:\temp\charRes\LDV_LR.emdl" id="3" name="LDV_LR"/>
+         <resolution href="file://C:\temp\charRes\RIG_XR.emdl" id="4" name="RIG_XR"/>
+      </Model>
+      <Model active_resolution="0" name="prop_B43">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\SIM_LR.emdl" id="1" name="SIM_LR"/>
+         <resolution href="file://C:\temp\charRes\LIT_MR.emdl" id="2" name="LIT_MR"/>
+         <resolution href="file://C:\temp\charRes\LDV_LR.emdl" id="3" name="LDV_LR"/>
+         <resolution href="file://C:\temp\charRes\RIG_XR.emdl" id="4" name="RIG_XR"/>
+      </Model>
+      <Model active_resolution="0" name="char_B_32">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\MOD_LR.emdl" id="1" name="MOD_LR"/>
+         <resolution href="file://C:\temp\charRes\PRE_XR.emdl" id="2" name="PRE_XR"/>
+         <resolution href="file://C:\temp\charRes\LDV_LR.emdl" id="3" name="LDV_LR"/>
+         <resolution href="file://C:\temp\charRes\LAY_PH.emdl" id="4" name="LAY_PH"/>
+      </Model>
+      <Model active_resolution="0" name="char_B_86">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\MOD_LR.emdl" id="1" name="MOD_LR"/>
+         <resolution href="file://C:\temp\charRes\PRE_XR.emdl" id="2" name="PRE_XR"/>
+         <resolution href="file://C:\temp\charRes\LDV_LR.emdl" id="3" name="LDV_LR"/>
+         <resolution href="file://C:\temp\charRes\LAY_PH.emdl" id="4" name="LAY_PH"/>
+      </Model>
+      <Model active_resolution="0" name="myModel11">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\LDV_XR.emdl" id="1" name="LDV_XR"/>
+         <resolution href="file://C:\temp\charRes\RIG_XR.emdl" id="2" name="RIG_XR"/>
+      </Model>
+      <Model active_resolution="0" name="char_B_83">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\MOD_LR.emdl" id="1" name="MOD_LR"/>
+         <resolution href="file://C:\temp\charRes\PRE_XR.emdl" id="2" name="PRE_XR"/>
+         <resolution href="file://C:\temp\charRes\LDV_LR.emdl" id="3" name="LDV_LR"/>
+         <resolution href="file://C:\temp\charRes\LAY_PH.emdl" id="4" name="LAY_PH"/>
+      </Model>
+      <Model active_resolution="0" name="char_B_80">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\MOD_LR.emdl" id="1" name="MOD_LR"/>
+         <resolution href="file://C:\temp\charRes\PRE_XR.emdl" id="2" name="PRE_XR"/>
+         <resolution href="file://C:\temp\charRes\LDV_LR.emdl" id="3" name="LDV_LR"/>
+         <resolution href="file://C:\temp\charRes\LAY_PH.emdl" id="4" name="LAY_PH"/>
+      </Model>
+      <Model active_resolution="0" name="myModel5">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\LDV_XR.emdl" id="1" name="LDV_XR"/>
+         <resolution href="file://C:\temp\charRes\RIG_XR.emdl" id="2" name="RIG_XR"/>
+      </Model>
+      <Model active_resolution="0" name="myModel2">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\LDV_XR.emdl" id="1" name="LDV_XR"/>
+         <resolution href="file://C:\temp\charRes\RIG_XR.emdl" id="2" name="RIG_XR"/>
+      </Model>
+      <Model active_resolution="0" name="char_B_123">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\MOD_LR.emdl" id="1" name="MOD_LR"/>
+         <resolution href="file://C:\temp\charRes\PRE_XR.emdl" id="2" name="PRE_XR"/>
+         <resolution href="file://C:\temp\charRes\LDV_LR.emdl" id="3" name="LDV_LR"/>
+         <resolution href="file://C:\temp\charRes\LAY_PH.emdl" id="4" name="LAY_PH"/>
+      </Model>
+      <Model active_resolution="0" name="prop_B78">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\SIM_LR.emdl" id="1" name="SIM_LR"/>
+         <resolution href="file://C:\temp\charRes\LIT_MR.emdl" id="2" name="LIT_MR"/>
+         <resolution href="file://C:\temp\charRes\LDV_LR.emdl" id="3" name="LDV_LR"/>
+         <resolution href="file://C:\temp\charRes\RIG_XR.emdl" id="4" name="RIG_XR"/>
+      </Model>
+      <Model active_resolution="0" name="prop_B75">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\SIM_LR.emdl" id="1" name="SIM_LR"/>
+         <resolution href="file://C:\temp\charRes\LIT_MR.emdl" id="2" name="LIT_MR"/>
+         <resolution href="file://C:\temp\charRes\LDV_LR.emdl" id="3" name="LDV_LR"/>
+         <resolution href="file://C:\temp\charRes\RIG_XR.emdl" id="4" name="RIG_XR"/>
+      </Model>
+      <Model active_resolution="0" name="prop_B72">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\SIM_LR.emdl" id="1" name="SIM_LR"/>
+         <resolution href="file://C:\temp\charRes\LIT_MR.emdl" id="2" name="LIT_MR"/>
+         <resolution href="file://C:\temp\charRes\LDV_LR.emdl" id="3" name="LDV_LR"/>
+         <resolution href="file://C:\temp\charRes\RIG_XR.emdl" id="4" name="RIG_XR"/>
+      </Model>
+      <Model active_resolution="0" name="myModel17">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\LDV_XR.emdl" id="1" name="LDV_XR"/>
+         <resolution href="file://C:\temp\charRes\RIG_XR.emdl" id="2" name="RIG_XR"/>
+      </Model>
+      <Model active_resolution="0" name="myModel14">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\LDV_XR.emdl" id="1" name="LDV_XR"/>
+         <resolution href="file://C:\temp\charRes\RIG_XR.emdl" id="2" name="RIG_XR"/>
+      </Model>
+      <Model active_resolution="0" name="char_A_1">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\SIM_LR.emdl" id="1" name="SIM_LR"/>
+         <resolution href="file://C:\temp\charRes\LDV_XR.emdl" id="2" name="LDV_XR"/>
+         <resolution href="file://C:\temp\charRes\LAY_PH.emdl" id="3" name="LAY_PH"/>
+      </Model>
+      <Model active_resolution="0" name="char_A_34">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\SIM_LR.emdl" id="1" name="SIM_LR"/>
+         <resolution href="file://C:\temp\charRes\LDV_XR.emdl" id="2" name="LDV_XR"/>
+         <resolution href="file://C:\temp\charRes\LAY_PH.emdl" id="3" name="LAY_PH"/>
+      </Model>
+      <Model active_resolution="0" name="char_A_31">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\SIM_LR.emdl" id="1" name="SIM_LR"/>
+         <resolution href="file://C:\temp\charRes\LDV_XR.emdl" id="2" name="LDV_XR"/>
+         <resolution href="file://C:\temp\charRes\LAY_PH.emdl" id="3" name="LAY_PH"/>
+      </Model>
+      <Model active_resolution="0" name="char_B_77">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\MOD_LR.emdl" id="1" name="MOD_LR"/>
+         <resolution href="file://C:\temp\charRes\PRE_XR.emdl" id="2" name="PRE_XR"/>
+         <resolution href="file://C:\temp\charRes\LDV_LR.emdl" id="3" name="LDV_LR"/>
+         <resolution href="file://C:\temp\charRes\LAY_PH.emdl" id="4" name="LAY_PH"/>
+      </Model>
+      <Model active_resolution="0" name="char_A_25">
+         <resolution href="" id="0" name="Offloaded"/>
+         <resolution href="file://C:\temp\charRes\SIM_LR.emdl" id="1" name="SIM_LR"/>
+         <resolution href="file://C:\temp\charRes\LDV_XR.emdl" id="2" name="LDV_XR"/>
+         <resolution href="file://C:\temp\charRes\LAY_PH.emdl" id="3" name="LAY_PH"/>
+      </Model>
+   </Models>
+   <Sources>
+      <Image name="noIcon_pic">$XSI_HOME/Application/rsrc/noIcon.pic</Image>
+   </Sources>
+   <Passes>
+      <RenderOptions name="RenderOptions">
+         <Renderer>Arnold Render</Renderer>
+         <OutputDir>[Project Path]/Render_Pictures</OutputDir>
+         <FramePadding>4</FramePadding>
+         <ImageFormatPreset>0</ImageFormatPreset>
+         <ImageAspectRatio>2.3402</ImageAspectRatio>
+         <ImageWidth>2048</ImageWidth>
+         <ImageHeight>1556</ImageHeight>
+         <ImagePixelRatio>1.778</ImagePixelRatio>
+         <ImageLockAspectRatio>1</ImageLockAspectRatio>
+         <FrameRangeSource>0</FrameRangeSource>
+         <FrameStart>1</FrameStart>
+         <FrameEnd>100</FrameEnd>
+         <FrameStep>1</FrameStep>
+         <FrameSet>1-100</FrameSet>
+         <FieldEnable>0</FieldEnable>
+         <FieldOrder>0</FieldOrder>
+         <FieldInterleave>0</FieldInterleave>
+         <MotionBlurShutterSpeed>0.5</MotionBlurShutterSpeed>
+         <MotionBlurShutterOffset>0</MotionBlurShutterOffset>
+         <MotionBlurShutterType>0</MotionBlurShutterType>
+         <MotionBlurDeformation>1</MotionBlurDeformation>
+      </RenderOptions>
+      <RenderOptions name="HardwareRenderer">
+         <RenderType>OpenGL</RenderType>
+         <BackgroundColorRed>0</BackgroundColorRed>
+         <BackgroundColorGreen>0</BackgroundColorGreen>
+         <BackgroundColorBlue>0</BackgroundColorBlue>
+         <BackgroundColorAlpha>0</BackgroundColorAlpha>
+         <Oversampling>7</Oversampling>
+         <ShadowmapEnable>1</ShadowmapEnable>
+         <ShadowmapSize>512</ShadowmapSize>
+      </RenderOptions>
+      <RenderOptions name="mentalray">
+         <RenderType>0</RenderType>
+         <IndirectIllumAlgorithm>0</IndirectIllumAlgorithm>
+         <Scanline>1</Scanline>
+         <SamplesContrastRed>0.2</SamplesContrastRed>
+         <SamplesContrastGreen>0.2</SamplesContrastGreen>
+         <SamplesContrastBlue>0.2</SamplesContrastBlue>
+         <SamplesContrastAlpha>0.2</SamplesContrastAlpha>
+         <SamplesMin>-1</SamplesMin>
+         <SamplesMax>1</SamplesMax>
+         <RasterizerShadingSamples>4</RasterizerShadingSamples>
+         <RasterizerPixelSamples>4</RasterizerPixelSamples>
+         <RasterizerMotionSamples>1</RasterizerMotionSamples>
+         <RasterizerMotionFactor>0</RasterizerMotionFactor>
+         <RasterizerMaxDepth>0</RasterizerMaxDepth>
+         <UnifiedSampling>0</UnifiedSampling>
+         <UnifiedSamplesMin>0.5</UnifiedSamplesMin>
+         <UnifiedSamplesMax>5</UnifiedSamplesMax>
+         <UnifiedSamplesQuality>0.5</UnifiedSamplesQuality>
+         <UnifiedSamplesErrorCutoff>0</UnifiedSamplesErrorCutoff>
+         <Trace>1</Trace>
+         <MotionSamples>5</MotionSamples>
+         <SamplesFilterType>2</SamplesFilterType>
+         <SamplesFilterSize>3</SamplesFilterSize>
+         <SamplesJitter>1</SamplesJitter>
+         <FGEnable>0</FGEnable>
+         <AmbientOcclusionEnable>1</AmbientOcclusionEnable>
+         <ImportonEnable>0</ImportonEnable>
+         <ImportonTraceThrough>1</ImportonTraceThrough>
+         <GIEnable>0</GIEnable>
+         <CausticEnable>0</CausticEnable>
+         <IPEnable>0</IPEnable>
+      </RenderOptions>
+      <Pass name="Default_Pass">
+         <Camera>Camera</Camera>
+         <Renderer/>
+         <ImageFormatOverride>0</ImageFormatOverride>
+         <ImageFormatPreset>0</ImageFormatPreset>
+         <ImageAspectRatio>2.3402</ImageAspectRatio>
+         <ImageWidth>2048</ImageWidth>
+         <ImageHeight>1556</ImageHeight>
+         <ImagePixelRatio>1.778</ImagePixelRatio>
+         <ImageLockAspectRatio>1</ImageLockAspectRatio>
+         <FrameRangeSource>3</FrameRangeSource>
+         <FrameStart>1</FrameStart>
+         <FrameEnd>100</FrameEnd>
+         <FrameStep>1</FrameStep>
+         <FrameSet>1-100</FrameSet>
+         <FrameSkipRendered>0</FrameSkipRendered>
+         <FieldOverride>0</FieldOverride>
+         <FieldEnable>0</FieldEnable>
+         <FieldOrder>0</FieldOrder>
+         <FieldInterleave>0</FieldInterleave>
+         <CropWindowEnabled>0</CropWindowEnabled>
+         <CropWindowOffsetX>0</CropWindowOffsetX>
+         <CropWindowOffsetY>0</CropWindowOffsetY>
+         <CropWindowWidth>2048</CropWindowWidth>
+         <CropWindowHeight>1556</CropWindowHeight>
+         <SelectionTracking>0</SelectionTracking>
+         <SelectionOnly>0</SelectionOnly>
+         <MotionBlur>0</MotionBlur>
+         <MotionBlurOverride>0</MotionBlurOverride>
+         <MotionBlurShutterSpeed>0.5</MotionBlurShutterSpeed>
+         <MotionBlurShutterOffset>0</MotionBlurShutterOffset>
+         <MotionBlurShutterType>0</MotionBlurShutterType>
+         <MotionBlurDeformation>1</MotionBlurDeformation>
+         <FrameBuffers>
+            <FrameBuffer name="Main">
+               <RenderChannel>Main</RenderChannel>
+               <Enabled>1</Enabled>
+               <Filename>[Pass]_[Framebuffer]</Filename>
+               <Format>exr</Format>
+               <DataType>RGBA</DataType>
+               <BitDepth>20</BitDepth>
+            </FrameBuffer>
+         </FrameBuffers>
+      </Pass>
+   </Passes>
+   <ParametersValues>
+      <Param name="Passes.current">Passes.Default_Pass</Param>
+      <Param name="PlayControl.Rate">24.000000</Param>
+   </ParametersValues>
+   <PostLoadScript>
+      <Language>VBScript</Language>
+      <Function/>
+      <Script_Content/>
+   </PostLoadScript>
+   <SceneInfo>
+      <LicenseRequired>Essential</LicenseRequired>
+   </SceneInfo>
+</xsi_file>

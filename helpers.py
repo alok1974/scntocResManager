@@ -16,6 +16,8 @@ import os
 import itertools
 
 BASE_COLOR = [170, 190, 210]
+SEP1 = '     ('
+SEP2 = ')'
 
 def _getNumberFromString(s):
     l = [p for p in s]
@@ -31,7 +33,28 @@ def _getNumberFromString(s):
 
     return str(sum([(pow(10,i) * p) for i, p in enumerate(n)])).zfill(len(n))
 
-def _makeDisplayGridDataFromModelDict(inNames):
+
+def _sortNames(inNames):
+    l = []
+    for name in inNames:
+        number = _getNumberFromString(name)
+
+        if not number:
+            number = 0
+
+        try:
+            number = int(number)
+        except:
+            raise Exception('cannot convert %s to a number !' % modelNumber)
+
+        l.append((number, name))
+
+    l.sort()
+
+    return [t[1] for t in l]
+
+
+def _extractRootAndSort(inNames):
     modelNames = []
     rootNames = []
     d = {}
@@ -61,9 +84,8 @@ def _makeDisplayGridDataFromModelDict(inNames):
 
     return modelNames, rootNames
 
-
 def _sortAndMakeColors(inModelNames):
-    sortedNames, extractedRoots = _makeDisplayGridDataFromModelDict(inModelNames)
+    sortedNames, extractedRoots = _extractRootAndSort(inModelNames)
     rootNames = list(set(extractedRoots))
     colorComb = [(i, j, k)
                 for i in BASE_COLOR
@@ -85,3 +107,55 @@ def _sortAndMakeColors(inModelNames):
 def _getCommonRes(inModelNameList, inModelAvResDict):
     return list(set.intersection(*map(set,[inModelAvResDict[modelName]
                                            for modelName in inModelNameList])))
+
+def _flattenList(inListOfLists, returnUnique=False):
+    l = list(itertools.chain(*(inListOfLists)))
+
+    if returnUnique:
+        return list(set(l))
+
+    return l
+
+def _reverseDict(inDict):
+    d = {}
+    for k, v in inDict.iteritems():
+        if not d.has_key(v):
+            d[v] = []
+
+        d[v].append(k)
+
+    return d
+
+def _getContiguousParts(inList):
+    listCopy = inList[:]
+    listCopy.sort()
+    iterList = listCopy[:]
+    parts = []
+
+    while len(iterList):
+        c = []
+        for index, e in enumerate(iterList):
+            if index==0:
+                c.append(e)
+                listCopy.remove(e)
+            else:
+                lastElement = iterList[index-1]
+                if e==lastElement + 1:
+                    c.append(e)
+                    listCopy.remove(e)
+                else:
+                    break
+        iterList = listCopy[:]
+        parts.append((c[0], c[-1]))
+
+    return parts
+
+def _writeModelNameParts(inModelName, inModelRes):
+    return "%s%s%s%s" % (inModelName, SEP1, inModelRes, SEP2)
+
+def _getModelNameParts(inModelNameStr):
+    modelName, endPart = inModelNameStr.split(SEP1)
+    modelRes, sep = endPart.split(SEP2)
+    modelName = modelName.strip()
+    modelRes = modelRes.strip()
+    return modelName, modelRes

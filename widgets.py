@@ -19,19 +19,59 @@ from PyQt4 import QtCore, QtGui
 
 import helpers
 
-APP_STYLE = ("WindowsVista" if sys.platform.startswith('win')  else "PLastique")
+APP_STYLE = ("WindowsVista" if sys.platform.startswith('win')  else "Plastique")
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 
+from logger import Logger
 
+class RecentFiles(object):
+    def __init__(self, *args, **kwargs):
+        super(RecentFiles, self).__init__(*args, **kwargs)
+        self.recentFile = os.path.join(ROOT_DIR, 'prefs', 'recentfiles')
+        self.files = []
+        self.maxFiles = 10
 
+    def _createRecent(self):
+        with open(self.recentFile, 'w') as f:
+            f.write('')
+
+    def _fetchRecent(self):
+        if not os.path.exists(self.recentFile):
+            self._createRecent()
+        
+        t = ''
+        with open(self.recentFile, 'r') as f:
+            t = f.read()
+        
+        self.files = t.split('"')
+        
+        # Cleaning any empty values
+        self.files = [f for f in self.files if f]
+
+        return self.files
+
+    def _writeRecent(self, file=''):
+        self._fetchRecent()
+
+        if self.files:
+            if len(self.files) > self.maxFiles:
+                return
+            
+        if file in self.files:
+            self.files.remove(file)
+        
+        self.files.insert(0, file)
+
+        with open(self.recentFile, 'w') as f:
+            f.write('"'.join(self.files))
+        
 class StyleSheet(object):
     STYLESHEET_OPTIONS = ['dark', 'soft', 'maya', 'nuke',]
 
     def __init__(self, *args, **kwargs):
         super(StyleSheet, self).__init__(*args, **kwargs)
-        self.prefFile = os.path.join(ROOT_DIR, 'styleSheets', 'prefs')
+        self.prefFile = os.path.join(ROOT_DIR, 'prefs', 'currStyle')
         self.style = ''
-
 
     def _createPrefs(self):
         with open(self.prefFile, 'w') as f:
@@ -329,35 +369,45 @@ class MainWidgetUI(QtGui.QWidget):
 
     def _setupUI(self):
         # Labels
-        self._modelLabel = QtGui.QLabel(' Available Models')
-        self._availableResLabel = QtGui.QLabel(' Available Res (Check Box to Set Active Res)')
-        self._resPathLabel = QtGui.QLabel(' Res Path')
-        self._resIDLabel = QtGui.QLabel(' Res ID')
-        self._nbModelLabel = QtGui.QLabel('<b>  Total Models : </b>')
+        self._modelLabel = QtGui.QLabel(' <b>Available Models</b>  <i>ModelName    (Active Res)</i>')
+        self._availableResLabel = QtGui.QLabel(' <b>Available Res</b> <i>(Check Box to Set Active Res)</i>')
+        self._filterLabel = QtGui.QLabel('<b>Filter Model List by Active Res</b>')
+        self._resPathLabel = QtGui.QLabel(' <b>Res Path</b>')
+        self._resIDLabel = QtGui.QLabel(' <b>Res ID</b>')
+        self._emptyLabel = QtGui.QLabel('')
+
+        self._nbModelLabel = QtGui.QLabel('<b><i>Total Models : </i></b>')
         self._nbModelLabel.setToolTip('Total number of models in the scntoc file.')
+
+        self._nbSelectedModelLabel = QtGui.QLabel('<b>  <i>Selected Models : 1</i></b>')
+        self._nbSelectedModelLabel.setToolTip('Total number of selected models.')
+
 
         # Buttons
         #btnHeight = 50
 
+        self._applyFilterBtn  = QtGui.QPushButton('Apply Filter')
+        self._applyFilterBtn.setToolTip('Apply filter on the Model List.')
+
+        self._resetFilterBtn  = QtGui.QPushButton('Reset Filter')
+        self._resetFilterBtn.setToolTip('Reset filters.')
+
         self._offloadBtn  = QtGui.QPushButton('Offload All')
-        #self._offloadBtn.setMinimumSize(300, btnHeight)
         self._offloadBtn.setToolTip('Offload All Models.')
 
         self._viewBtn  = QtGui.QPushButton('View Changes')
-        #self._viewBtn.setMinimumSize(300, btnHeight)
         self._viewBtn.setToolTip('View the changes to be commited.')
 
-
         self._resetBtn  = QtGui.QPushButton('Reset All Res to Original')
-        #self._resetBtn.setMinimumSize(300, btnHeight)
         self._resetBtn.setToolTip('Reset data to original file at open time.')
 
+        self._selectBtn  = QtGui.QPushButton('Res to Model Lookup')
+        self._selectBtn.setToolTip('Select all models based on a particular resolution.')
+
         self._applyBtn  = QtGui.QPushButton('Write and Close')
-        #self._applyBtn.setMinimumSize(300, btnHeight)
         self._applyBtn.setToolTip('Apply the changes and write the scntoc file on disk.')
 
         self._cancelBtn  = QtGui.QPushButton('Cancel')
-        #self._cancelBtn.setMinimumSize(300, btnHeight)
         self._cancelBtn.setToolTip('Close without saving any changes.')
         self._cancelBtn.clicked.connect(self._cancelBtnOnClickedBase)
 
@@ -369,8 +419,12 @@ class MainWidgetUI(QtGui.QWidget):
         self._modelListWidget.setMinimumSize(250, 300)
 
         self._avResListWidget = QtGui.QListWidget()
-        self._avResListWidget.setMinimumWidth(150)
+        self._avResListWidget.setMinimumSize(150, 150)
         self._avResListWidget.setToolTip('Avalaiable resolutions for the selected Model.')
+
+        self._filterListWidget = QtGui.QListWidget()
+        self._filterListWidget.setMinimumSize(150, 150)
+        self._filterListWidget.setToolTip('Filter model list by selecting a res.')
 
         self._resPathLineEdit = QtGui.QLineEdit()
         self._resPathLineEdit.setMinimumSize(300, 30)
@@ -388,36 +442,49 @@ class MainWidgetUI(QtGui.QWidget):
         self._grid.setSpacing(10)
 
         self._grid.addWidget(self._modelLabel, 0, 0)
-        self._grid.addWidget(self._modelListWidget, 1, 0, 9, 1)
+        self._grid.addWidget(self._modelListWidget, 1, 0, 10, 1)
 
-        self._grid.addWidget(self._nbModelLabel, 10, 0, 1, 1)
+        self._grid.addWidget(self._nbModelLabel, 11, 0, 1, 1)
 
         self._grid.addWidget(self._availableResLabel, 0, 2)
-        self._grid.addWidget(self._avResListWidget, 1, 2, 9, 1)
+        self._grid.addWidget(self._avResListWidget, 1, 2)
 
-        self._grid.addWidget(self._resPathLabel, 0, 3)
-        self._grid.addWidget(self._resPathLineEdit, 1, 3, 1, 1, QtCore.Qt.AlignTop)
+        self._grid.addWidget(self._filterLabel, 3, 2)
+        self._grid.addWidget(self._filterListWidget, 4, 2, 4, 4)
 
-        self._grid.addWidget(self._resIDLabel, 2, 3, 1, 1, QtCore.Qt.AlignTop)
-        self._grid.addWidget(self._resIDLineEdit, 3, 3, 1, 1, QtCore.Qt.AlignTop)
+        self._grid.addWidget(self._applyFilterBtn, 9, 2, 1, 4)
 
-        self._grid.addWidget(self._offloadBtn, 5, 3, 1, 1, QtCore.Qt.AlignTop)
-        self._grid.addWidget(self._viewBtn, 6, 3, 1, 1, QtCore.Qt.AlignTop)
-        self._grid.addWidget(self._resetBtn, 7, 3, 1, 1, QtCore.Qt.AlignTop)
-        self._grid.addWidget(self._applyBtn, 8, 3, 1, 1, QtCore.Qt.AlignTop)
-        self._grid.addWidget(self._cancelBtn, 9, 3, 1, 1, QtCore.Qt.AlignTop)
+        self._grid.addWidget(self._resetFilterBtn, 10, 2, 1, 4)
 
+        self._grid.addWidget(self._nbSelectedModelLabel, 11, 2)
+
+        self._vLayout = QtGui.QVBoxLayout()
+        self._vLayout.addStretch(100)
+
+        self._grid.addWidget(self._resPathLabel, 0, 3, 1, 1)
+        self._vLayout.addWidget(self._resPathLineEdit)
+
+        self._vLayout.addWidget(self._resIDLabel)
+        self._vLayout.addWidget(self._resIDLineEdit)
+
+        self._vLayout.addWidget(self._offloadBtn)
+        self._vLayout.addWidget(self._viewBtn)
+        self._vLayout.addWidget(self._resetBtn)
+        self._vLayout.addWidget(self._applyBtn)
+        self._vLayout.addWidget(self._cancelBtn)
+
+        self._grid.addLayout(self._vLayout, 1, 3)
 
         self._mainLayout = QtGui.QVBoxLayout(self)
         self._mainLayout.addLayout(self._grid)
 
-        StyleSheet().setColor(self)
 
     def _cancelBtnOnClickedBase(self):
         if self._hasFileloaded:
             return
 
-        QtCore.QCoreApplication.instance().quit()
+        self.close()
+
 
 class TestWidget(HelpWidget):
     def __init__(self, *args, **kwargs):

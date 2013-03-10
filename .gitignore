@@ -2,7 +2,7 @@
 
 *.komodoproject
 
-styleSheets/prefs
+prefs/*.*
 srcPsd/*.*
 
 # C extensions
