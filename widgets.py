@@ -250,11 +250,9 @@ class HelpWidget(QtGui.QDialog):
     def _initPaths(self):
         self._addPath('style', 'css')
         self._addPath('about', 'html')
-        self._addPath('about', 'html')
         self._addPath('license', 'txt', folder='license')
 
         self._addPath('about', 'jpg', isImage=True)
-        self._addPath('bg', 'jpg', isImage=True)
         self._addPath('bg', 'jpg', isImage=True)
 
         for i in range(1, self._nbPages + 1):
