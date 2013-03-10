@@ -20,8 +20,6 @@ import helpers
 APP_STYLE = ("WindowsVista" if sys.platform.startswith('win')  else "Plastique")
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
 
-from logger import Logger
-
 class RecentFiles(object):
     def __init__(self, *args, **kwargs):
         super(RecentFiles, self).__init__(*args, **kwargs)
