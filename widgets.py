@@ -182,7 +182,7 @@ class HelpWidget(QtGui.QDialog):
 
         self._pg = 1
 
-        self._nbPages = 6
+        self._nbPages = 7
 
         self._pathCache = {}
 
