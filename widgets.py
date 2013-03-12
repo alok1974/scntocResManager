@@ -382,7 +382,7 @@ class MainWidgetUI(QtGui.QWidget):
         self._nbModelLabel = QtGui.QLabel('<b><i>Total Models : </i></b>')
         self._nbModelLabel.setToolTip('Total number of models in the scntoc file.')
 
-        self._nbSelectedModelLabel = QtGui.QLabel('<b>  <i>Selected Models : 1</i></b>')
+        self._nbSelectedModelLabel = QtGui.QLabel('<b>  <i>Selected Models : </i></b>')
         self._nbSelectedModelLabel.setToolTip('Total number of selected models.')
 
 

@@ -126,7 +126,8 @@ class MainWidget(MainWidgetUI):
         self._activeResName = modelRes
 
         self._nbModelLabel.setText('<b>  <i>Total Models : %s</i></b>' % str(len(inModelNames)))
-
+        self._nbSelectedModelLabel.setText('<b>  <i>Selected Models : 1</i></b>')
+		
     def _updateAvailableResolution(self):
         self._avResListWidget.clear()
         avRes = self._modelAvailableResNames[self._selectedModelName]
