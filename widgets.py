@@ -267,7 +267,7 @@ class StyleSheet(object):
         with open(self.prefFile, 'r') as f:
             s = f.readlines()
 
-        self.style= s[0].split(':')[-1]
+        self.style= s[0].split(':')[1]
 
         return self.style
 
@@ -276,7 +276,7 @@ class StyleSheet(object):
             self._createPrefs()
 
         with open(self.prefFile, 'w') as f:
-            f.write('theme:%s' % pref)
+            f.write('theme:%s:' % pref)
 
     def setColor(self, widget, app=None, init=False):
         self._readPrefs()

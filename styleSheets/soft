@@ -1,5 +1,5 @@
-QMainWindow	                                    {background-color: rgb(173,170,165);
-                                                background: rgb(173,170,165);
+QMainWindow	                                    {background-color: rgb(171,168,166);
+                                                background: rgb(171,168,166);
                                                 color: rgb(5,5,5);
                                                 font-family: "Tahoma";
                                                 font-size: 11px;
@@ -10,7 +10,7 @@ QMainWindow::disabled                           {color: rgb(120,120,120)}
 
 QMainWindow::separator                          {background-color: rgb(168,165,160);}
 
-QDialog	                                        {background-color: rgb(173,170,165);}
+QDialog	                                        {background-color: rgb(171,168,166);}
 
 QAction	                                        { background-color: rgb(170,168,165); }
 
@@ -21,7 +21,7 @@ QCalendar                                       {background: rgb(162,160,156);
                                                 alternate-background-color: rgb(190,190,190);
                                                 border: 1px solid rgb(51,153,255);}
 
-QAbstractProxyModel           {background:rgb(173,170,165); color:rgb(5,5,5)}
+QAbstractProxyModel           {background:rgb(171,168,166); color:rgb(5,5,5)}
 
 QToolTip                                {background: rgb(40,40,40);
                                                 color: rgb(155,155,155)}
@@ -137,17 +137,17 @@ QScrollBar                                      {color: solid black}
 QDockWidget	                                    {border: 1px solid black;
                                                 color: rgb(5,5,5);
                                                 font-size: 11px;
-                                                background: rgb(173,170,165) }
+                                                background: rgb(171,168,166) }
 
 QDockWidget::title                              { text-align: center;
-                                                background: rgb(173,170,165);
+                                                background: rgb(171,168,166);
                                                 padding-left: 5px; }
 
 QDockWidget::close-button, QDockWidget::float-button {border: 1px solid transparent;
-                                                background: rgb(173,170,165);
+                                                background: rgb(171,168,166);
                                                 padding: 0px;}
 
-QDialog	                                        {background-color: rgb(173,170,165);
+QDialog	                                        {background-color: rgb(171,168,166);
                                                 color: rgb(5,5,5);}
 
 QLabel                                          {border: 1px solid transparent;
@@ -200,15 +200,15 @@ QMenu::disabled                                 {background-color: solid black;
                                                  color: rgb(120,120,120);
                                                  font-style: normal;}
 
-QMenu::item	                                    {background: rgb(173,170,165);
-                                                color: rgb(173,170,165);
+QMenu::item	                                    {background: rgb(171,168,166);
+                                                color: rgb(171,168,166);
                                                 font-style: normal;
                                                 font-size: 11px;}
 
-QMenu::item:enabled	                            {background: rgb(173,170,165);
+QMenu::item:enabled	                            {background: rgb(171,168,166);
                                                  color: rgb(5,5,5)}
 
-QMenu::item:selected                            {background-color: rgb(173,170,165);
+QMenu::item:selected                            {background-color: rgb(171,168,166);
                                                 color: rgb(240,240,236)}
 
 QMenu::item:selected:enabled                     {background-color: rgb(51,153,255);
@@ -216,7 +216,7 @@ QMenu::item:selected:enabled                     {background-color: rgb(51,153,2
 
 QMenu::separator                                {background: rgb(162,160,156)}
 
-QMenuBar                                        {background: rgb(173,170,165);
+QMenuBar                                        {background: rgb(171,168,166);
                                                 color: rgb(5,5,5)}
 
 QMenuBar::disabled                              {
@@ -230,7 +230,7 @@ QMenuBar::disabled                              {
                                                 border-style: solid;
                                                 margin:0px;}
 
-QMessageBox	                                    {background-color: rgb(173,170,165); }
+QMessageBox	                                    {background-color: rgb(171,168,166); }
 
 QPushButton, QToolButton                        {color: rgb(5,5,5);
                                                 font-size: 11px;
@@ -270,7 +270,7 @@ QRubberBand	                                    { background-color: rgb(170,168,
 
 QScrollArea                                     { background-color: rgb(170,168,165); }
 
-QSplitter                                       { background-color: rgb(173,170,165);
+QSplitter                                       { background-color: rgb(171,168,166);
                                                 color: rgb(40, 40, 40);
                                                 }
 
@@ -298,7 +298,7 @@ QTabBar, QTabWidget	                            { color: rgb(5,5,5);
 
 QTabBar::tab:selected, QTabWidget::tab:selected {
                                                 color: rgb( 5,5,5 );
-                                                background:qlineargradient(spread:linear, x1:0, y1:.2, x2:0, y2:0, stop:0 rgb(173,170,165), stop:1 rgb(250,250,250));
+                                                background:qlineargradient(spread:linear, x1:0, y1:.2, x2:0, y2:0, stop:0 rgb(171,168,166), stop:1 rgb(250,250,250));
                                                 border: 0px;
                                                 border-radius: 2px;
                                                 margin: 2px;
