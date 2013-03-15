@@ -1,7 +1,7 @@
 ##########################################################################################
 ##########################################################################################
 ##                                                                                      ##
-##  Scenetoc Resolution Manager V 1.0 (c) 2013 Alok Gandhi (alok.gandhi2002@gmail.com)  ##
+##  Scenetoc Resolution Manager V 1.02 (c) 2013 Alok Gandhi (alok.gandhi2002@gmail.com)  ##
 ##                                                                                      ##
 ##                                                                                      ##
 ##  This program is free software: you can redistribute it and/or modify it             ##
@@ -15,6 +15,7 @@
 import os
 import sys
 from PyQt4 import QtCore, QtGui
+from logger import Logger
 
 TITLE = "SCNTOC RES MANAGER"
 IS_MSG = 0
@@ -22,7 +23,7 @@ IS_QUESTION = 1
 YES = QtGui.QMessageBox.Yes
 NO = QtGui.QMessageBox.No
 LEADING_SPACE = 7
-PARA_WIDTH = 55
+PARA_WIDTH = 35
 
 ENUM_CODE = {
                 # Messages
@@ -30,11 +31,11 @@ ENUM_CODE = {
                 3: ('You need to have at least one res selected to apply the filer.', IS_MSG),
                 4: ('No Models with %s combination of filters.', IS_MSG),
                 5: ('There are no changes to save.', IS_MSG),
-                6: ('The file path - %s does not exist !. This path will be removed from the recent files list.', IS_MSG),                                
+                6: ('The file path - %s does not exist !. This path will be removed from the recent files list.', IS_MSG),
 
                 # Questions
                 101: ('Do you want to offoad all models ?', IS_QUESTION),
-                102: ('Do you want to revert all changes you made and go back to original file state ?', IS_QUESTION),
+                102: ('Do you want to revert all changes you made and go back to original file state?', IS_QUESTION),
                 103: ('Do you want to write changes to the loaded file and close ?', IS_QUESTION),
                 104: ('Do you want to exit without saving your changes ? ', IS_QUESTION),
             }
@@ -56,7 +57,7 @@ def _addArgs(inStr, inArgs=[]):
 
 def _makePara(inText):
     allWords = inText.split(" ")
-    
+
     words = []
     for word in allWords:
         if '/' in word:
@@ -66,11 +67,11 @@ def _makePara(inText):
                     nWord = pWord
                 else:
                     nWord = '%s/' % pWord
-                
+
                 words.append(nWord)
         else:
             words.append(word)
-    
+
     finalStr = ''
     finalStr = '\n'
     finalStr += ' ' * LEADING_SPACE

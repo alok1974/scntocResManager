@@ -1,7 +1,7 @@
 ##########################################################################################
 ##########################################################################################
 ##                                                                                      ##
-##  Scenetoc Resolution Manager V 1.0 (c) 2013 Alok Gandhi (alok.gandhi2002@gmail.com)  ##
+##  Scenetoc Resolution Manager V 1.02 (c) 2013 Alok Gandhi (alok.gandhi2002@gmail.com)  ##
 ##                                                                                      ##
 ##                                                                                      ##
 ##  This program is free software: you can redistribute it and/or modify it             ##

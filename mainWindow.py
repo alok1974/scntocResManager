@@ -1,7 +1,7 @@
 ##########################################################################################
 ##########################################################################################
 ##                                                                                      ##
-##  Scenetoc Resolution Manager V 1.0 (c) 2013 Alok Gandhi (alok.gandhi2002@gmail.com)  ##
+##  Scenetoc Resolution Manager V 1.02 (c) 2013 Alok Gandhi (alok.gandhi2002@gmail.com)  ##
 ##                                                                                      ##
 ##                                                                                      ##
 ##  This program is free software: you can redistribute it and/or modify it             ##
@@ -17,10 +17,12 @@ import os
 import functools
 from PyQt4 import QtCore, QtGui
 
-from widgets import MainWidgetUI, TextWidget, HelpWidget, StyleSheet, RecentFiles
+from widgets import MainWidgetUI, TextWidget, HelpWidget, StyleSheet, RecentFiles, ResPathEditWidget, clickable
 from scntocReader import ScenetocReader
 import helpers
 import msgHandler
+from logger import Logger
+
 WIN_TITLE = "Scenetoc Res Manager"
 
 class MainWidget(MainWidgetUI):
@@ -28,7 +30,6 @@ class MainWidget(MainWidgetUI):
         super(MainWidget, self).__init__(*args, **kwargs)
 
         self._file = None
-        self._dataChanged = False
         self._connected = False
 
         # Setup Layout
@@ -37,6 +38,17 @@ class MainWidget(MainWidgetUI):
     def _initUI(self):
         self._setupUI()
         self.setLayout(self._mainLayout)
+
+    def _dataChanged():
+        def fget(self):
+            return bool(int(self._dataChangedLineEdit.text()))
+
+        def fset(self, data=False):
+            self._dataChangedLineEdit.setText(str(int(data)))
+
+        return locals()
+
+    _dataChanged = property(**_dataChanged())
 
     def load(self, file):
         self._file = file
@@ -78,13 +90,18 @@ class MainWidget(MainWidgetUI):
         self._selectedModelName = ''
         self._selectedModelNames = []
         self._selectedResName = ''
-        self._mutliSelected = False
+        self._multiSelected = False
+
         self._modelNames, self._modelNameColors = helpers._sortAndMakeColors(self._modelDict.keys())
         self._nbModels = len(self._modelNames)
         self._modelNameIndices = dict([(modelName, index) for index, modelName in enumerate(self._modelNames)])
         self._modelActiveResNames = dict([(k, v['activeResName']) for k, v in self._modelDict.iteritems()])
         self._modelActiveResNamesOriginal = dict([(k, v['activeResName']) for k, v in self._modelDict.iteritems()])
-        self._modelResData = dict([(k, v['resData']) for k, v in self._modelDict.iteritems()])
+
+        # Creating completely new dicts from scratch to prevent instances of the same objects
+        self._modelResData = dict([(k, [dict([(k1, v1) for k1, v1 in f.iteritems()]) for f in v['resData']]) for k, v in self._modelDict.iteritems()])
+        self._modelResDataOriginal = dict([(k, [dict([(k1, v1) for k1, v1 in f.iteritems()]) for f in v['resData']]) for k, v in self._modelDict.iteritems()])
+
         self._modelAvailableResNames = dict([(modelName, [d['resName']for d in modelData['resData']]) for modelName, modelData in self._modelDict.iteritems()])
         self._allAvailableRes = helpers._flattenList([resNames for _, resNames in self._modelAvailableResNames.iteritems()], returnUnique=True)
 
@@ -104,6 +121,59 @@ class MainWidget(MainWidgetUI):
 
         # Init Available Res Names List Widget
         self._updateAvailableResolution()
+
+        self._resIDLineEdit.setStyleSheet("QLineEdit { background-color : rgb(230, 230, 230); color : rgb(0, 0, 0); }")
+
+    # Signal Connections
+    def _connectSignals(self):
+        self._avResListWidget.currentItemChanged.connect(self._updateResPathAndID)
+        self._avResListWidget.itemChanged.connect(self._checkBoxOnClicked)
+        self._filterListWidget.itemChanged.connect(self._filterOnClicked)
+        self._modelListWidget.itemSelectionChanged.connect(self._modelNameOnSelectionChange)
+        self._offloadBtn.clicked.connect(self._offloadBtnOnClicked)
+        self._viewBtn.clicked.connect(self._viewBtnOnClicked)
+        self._resetBtn.clicked.connect(self._resetBtnOnClicked)
+        self._applyBtn.clicked.connect(self._applyBtnOnClicked)
+        self._cancelBtn.clicked.connect(self._cancelBtnOnClicked)
+        self._applyFilterBtn.clicked.connect(self._applyFilterBtnOnClicked)
+        self._resetFilterBtn.clicked.connect(self._resetFilterBtnOnClicked)
+
+        # Implemented double click event filter
+        clickable(self._resPathLineEdit).connect(self._handleDoubleClick)
+
+        self._connected = True
+
+    def _handleDoubleClick(self):
+        if str(self._resPathLineEdit.text())=="<No Common Path>":
+            return
+
+        if str(self._resPathLineEdit.text())=="<Empty>":
+            return
+
+
+        if not hasattr(self, 'rw'):
+            self.rw = ResPathEditWidget(widget=self._resPathLineEdit,
+                                        dataChangedWidget=self._dataChangedLineEdit,
+                                        multiSelected=self._multiSelected,
+                                        selectedRes=self._selectedResName,
+                                        selectedModel=self._selectedModelName,
+                                        selectedModels=self._selectedModelNames,
+                                        resData=self._modelResData,
+                                        resDataOrig=self._modelResDataOriginal,
+                                        )
+        else:
+            self.rw = None
+            self.rw = ResPathEditWidget(widget=self._resPathLineEdit,
+                                        dataChangedWidget=self._dataChangedLineEdit,
+                                        multiSelected=self._multiSelected,
+                                        selectedRes=self._selectedResName,
+                                        selectedModel=self._selectedModelName,
+                                        selectedModels=self._selectedModelNames,
+                                        resData=self._modelResData,
+                                        resDataOrig=self._modelResDataOriginal,
+                                        )
+
+        self.rw.show()
 
     def _updateModelListWidget(self, inModelNames=[]):
         self._modelListWidget.clear()
@@ -127,28 +197,77 @@ class MainWidget(MainWidgetUI):
 
         self._nbModelLabel.setText('<b>  <i>Total Models : %s</i></b>' % str(len(inModelNames)))
         self._nbSelectedModelLabel.setText('<b>  <i>Selected Models : 1</i></b>')
-		
+
     def _updateAvailableResolution(self):
         self._avResListWidget.clear()
-        avRes = self._modelAvailableResNames[self._selectedModelName]
-        activeRes = self._modelActiveResNames[self._selectedModelName]
+
+        if self._multiSelected:
+            self._selectedModelNames = [helpers._getModelNameParts(str(item.text()))[0] for item in self._modelListWidget.selectedItems()]
+            allRes = helpers._getCommonRes(self._selectedModelNames, self._modelAvailableResNames)
+
+            if not allRes:
+                self._avResListWidget.addItems(['  <No Common Res>  '])
+                return
+
+            commonActiveResList = helpers._getCommonRes(self._selectedModelNames, dict([(k, [v]) for k, v in self._modelActiveResNames.iteritems()])) # just converting commong active res dict to have list as values which the helpers function needs.
+            activeRes = (str(commonActiveResList[0]) if commonActiveResList else '')
+
+        else:
+            self._selectedModelName = helpers._getModelNameParts(str(self._modelListWidget.currentItem().text()))[0]
+            allRes = self._modelAvailableResNames[self._selectedModelName]
+            activeRes = self._modelActiveResNames[self._selectedModelName]
 
         activeResIndex = 0
-        for index, res in enumerate(avRes):
+        for index, res in enumerate(allRes):
             w = QtGui.QListWidgetItem(res)
 
-            if str(res)==str(activeRes):
-                w.setCheckState(2)
+            if activeRes=='':
+                state = 1
+            elif res==activeRes:
+                state = 2
                 activeResIndex = index
             else:
-                pass
-                w.setCheckState(0)
+                state = 0
 
+            w.setCheckState(state)
             self._avResListWidget.addItem(w)
 
         self._avResListWidget.setCurrentRow(activeResIndex)
         self._selectedResName = str(self._avResListWidget.currentItem().text())
-        self._resolutionOnChanged()
+        self._updateResPathAndID()
+
+    def _updateResPathAndID(self):
+        if not self._avResListWidget.currentItem():
+            return
+
+        self._selectedResName = str(self._avResListWidget.currentItem().text())
+
+        if self._multiSelected:
+            resPath = helpers._getCommonPath(self._selectedModelNames, self._selectedResName, self._modelResData)
+            resID = '<multiple selection>'
+        else:
+            resData = self._modelResData[self._selectedModelName]
+            resPath = str([d['resPath'] for d in resData if d['resName']==self._selectedResName][0])
+            resID = str([d['resID'] for d in resData if d['resName']==self._selectedResName][0])
+
+        if resPath=='':
+            resDisplayPath ="<Empty>"
+        else:
+            resDisplayPath = resPath[7:]
+
+        if not os.path.exists(resDisplayPath):
+            r, g, b = 120, 0, 0
+        else:
+            r, g, b = 0, 120, 0
+
+        self._resPathLineEdit.setStyleSheet("QLineEdit {background-color : rgb(230, 230, 230); color : rgb(%s, %s, %s)}" % (r, g, b))
+
+        # Updating Selected  Res Path
+        self._resPathLineEdit.setText(resDisplayPath)
+        self._resPathLineEdit.setCursorPosition(0)
+
+        # Updating Selected  Res ID
+        self._resIDLineEdit.setText(resID)
 
     def _updateAllResListWidget(self):
         w = QtGui.QListWidgetItem('All')
@@ -160,47 +279,13 @@ class MainWidget(MainWidgetUI):
             w.setCheckState(2)
             self._filterListWidget.addItem(w)
 
-    # Signal Connections
-    def _connectSignals(self):
-        self._avResListWidget.currentItemChanged.connect(self._resolutionOnChanged)
-        self._avResListWidget.itemChanged.connect(self._checkBoxOnClicked)
-        self._filterListWidget.itemChanged.connect(self._filterOnClicked)
-        self._modelListWidget.itemSelectionChanged.connect(self._modelNameOnSelectionChange)
-        self._offloadBtn.clicked.connect(self._offloadBtnOnClicked)
-        self._viewBtn.clicked.connect(self._viewBtnOnClicked)
-        self._resetBtn.clicked.connect(self._resetBtnOnClicked)
-        self._applyBtn.clicked.connect(self._applyBtnOnClicked)
-        self._cancelBtn.clicked.connect(self._cancelBtnOnClicked)
-        self._applyFilterBtn.clicked.connect(self._applyFilterBtnOnClicked)
-        self._resetFilterBtn.clicked.connect(self._resetFilterBtnOnClicked)
-        self._connected = True
+    def _modelNameOnSelectionChange(self):
+        nbSelectedModels = len(self._modelListWidget.selectedItems())
+        self._multiSelected = nbSelectedModels > 1
+        self._nbSelectedModelLabel.setText('<b>  Selected Models : </b><b>%s</b>' % str(nbSelectedModels))
 
-    def _resolutionOnChanged(self):
-        if not self._avResListWidget.currentItem():
-            return
-
-        if self._mutliSelected:
-            self._resPathLineEdit.setText("<multiple selection>")
-            self._resIDLineEdit.setText("<multiple selection>")
-            return
-
-
-        self._selectedResName = str(self._avResListWidget.currentItem().text())
-
-        resData = self._modelResData[self._selectedModelName]
-        resPath = str([d['resPath'] for d in resData if d['resName']==self._selectedResName][0])
-        if resPath=='':
-            resPath="<Empty>"
-        else:
-            resPath = resPath[7:]
-        resID = str([d['resID'] for d in resData if d['resName']==self._selectedResName][0])
-
-        # Updating Selected  Res Path
-        self._resPathLineEdit.setText(resPath)
-        self._resPathLineEdit.setCursorPosition(0)
-
-        # Updating Selected  Res ID
-        self._resIDLineEdit.setText(resID)
+        # Updating Available Resolutions
+        self._updateAvailableResolution()
 
     def _checkBoxOnClicked(self, item):
         self._avResListWidget.setCurrentItem(item)
@@ -218,15 +303,21 @@ class MainWidget(MainWidgetUI):
                 thisItem.setCheckState(0)
                 self._avResListWidget.blockSignals(False)
 
-        if self._mutliSelected:
-            dataChanged = False
-            for modelName in self._selectedModelNames:
-                dataChanged = self._setActiveResolution(item, modelName)
-            self._dataChanged = dataChanged
-        else:
-            self._dataChanged = self._setActiveResolution(item, self._selectedModelName)
+        modelNames = (self._selectedModelNames if self._multiSelected else [self._selectedModelName])
+
+        for modelName in modelNames :
+            self._setActiveResolution(item, modelName)
 
         self._updateModelNamesWithRes(newRes=str(item.text()))
+
+    def _setActiveResolution(self, inItem, inModelName):
+        clickedRes = str(inItem.text())
+        origRes = self._modelActiveResNamesOriginal[inModelName]
+
+        if clickedRes!=origRes:
+            self._dataChanged = True
+
+        self._modelActiveResNames[inModelName] = str(inItem.text())
 
     def _updateModelNamesWithRes(self, newRes=''):
         selectionModel = self._modelListWidget.selectionModel()
@@ -238,15 +329,6 @@ class MainWidget(MainWidgetUI):
             modelName, modelRes = helpers._getModelNameParts(str(modelNameItem.text()))
             modelNameStr = helpers._writeModelNameParts(modelName, newRes)
             modelNameItem.setText(modelNameStr)
-
-    def _setActiveResolution(self, inItem, inModelName):
-            clickedRes = str(inItem.text())
-            currentRes = self._modelActiveResNamesOriginal[inModelName]
-            if clickedRes==currentRes:
-                return False
-            else:
-                self._modelActiveResNames[inModelName] = str(inItem.text())
-                return True
 
     def _filterOnClicked(self, item):
         self._handleFilterClicks(item)
@@ -271,63 +353,6 @@ class MainWidget(MainWidgetUI):
         self._filterListWidget.item(0).setCheckState(state)
         self._filterListWidget.blockSignals(False)
 
-    def _modelNameOnSelectionChange(self):
-        nbSelectedModels = len(self._modelListWidget.selectedItems())
-        if nbSelectedModels > 1:
-            self._mutliSelected = True
-            self._modelNameOnChangedMulti()
-            self._resPathLineEdit.setText("<multiple selection>")
-            self._resIDLineEdit.setText("<multiple selection>")
-            self._nbSelectedModelLabel.setText('<b>  Selected Models : </b><b>%s</b>' % str(nbSelectedModels))
-
-        else:
-            self._mutliSelected = False
-            self._modelNameOnChangedSingle()
-            self._nbSelectedModelLabel.setText('<b>  Selected Models : 1</b>')
-
-    def _modelNameOnChangedMulti(self):
-        self._selectedModelNames = [helpers._getModelNameParts(str(item.text()))[0] for item in self._modelListWidget.selectedItems()]
-        commonRes = helpers._getCommonRes(self._selectedModelNames, self._modelAvailableResNames)
-
-        if not commonRes:
-            self._avResListWidget.clear()
-            self._avResListWidget.addItems(['  <No Common Res>  '])
-            return
-
-        commonActiveResList = helpers._getCommonRes(self._selectedModelNames, dict([(k, [v]) for k, v in self._modelActiveResNames.iteritems()])) # just converting commong active res dict to have list as values which the helpers function needs.
-        commonActiveRes = (str(commonActiveResList[0]) if commonActiveResList else '')
-
-        self._avResListWidget.clear()
-        for index, res in enumerate(commonRes):
-                res = str(res)
-                w = QtGui.QListWidgetItem(res)
-
-                if commonActiveRes=='':
-                    state = 1
-                elif res==commonActiveRes:
-                    state = 2
-                else:
-                    state = 0
-
-                w.setCheckState(state)
-                self._avResListWidget.addItem(w)
-
-    def _modelNameOnChangedSingle(self):
-        # Getting Selected Model Name
-        self._selectedModelName = helpers._getModelNameParts(str(self._modelListWidget.currentItem().text()))[0]
-
-        # Updating Available Resolutions
-        self._updateAvailableResolution()
-
-    def _showDialog(self, title, msg):
-        reply = QtGui.QMessageBox.question(self, title,
-                         msg, QtGui.QMessageBox.Yes, QtGui.QMessageBox.No)
-
-        if reply==QtGui.QMessageBox.Yes:
-            return True
-
-        return False
-
     def _offloadBtnOnClicked(self):
         if not msgHandler._pop(self, 101):
             return
@@ -349,7 +374,7 @@ class MainWidget(MainWidgetUI):
         viewLogHeader = ''
         viewLogHeader += '-' * 80
         viewLogHeader += '\n'
-        viewLogHeader += 'Following changes were made to the Reference Model Resolutions:\n'
+        viewLogHeader += 'Following changes were made to the Ref Model Data:\n'
         viewLogHeader += '-' * 80
         viewLogHeader += '\n'
 
@@ -357,11 +382,43 @@ class MainWidget(MainWidgetUI):
         ctr = 0
         resLog = ''
         for modelName, res in self._modelActiveResNamesOriginal.iteritems():
+            pathChanged = False
+
+            # Getting Change in Res Path
+            resDataList = self._modelDict[modelName]['resData']
+            resDataListChanged = self._modelResData[modelName]
+            for resData in resDataList:
+                resID = resData['resID']
+                oldPath = resData['resPath']
+                newPath = [r['resPath'] for r in resDataListChanged if r['resID']==resID][0]
+
+                if oldPath!=newPath:
+
+                    if not pathChanged:
+                        resLog += '%s\n\n' % modelName
+
+                    noChange = False
+                    resLog += '(path change)  %s to - %s\n' % (oldPath, newPath)
+                    ctr += 1
+                    pathChanged = True
+
+            # Getting Change in Active Res
             commitRes = self._modelActiveResNames[modelName]
             if res!=commitRes:
                 noChange = False
-                resLog += '%s\n%s  -->  %s\n\n\n\n' % (modelName, res, commitRes)
-                ctr += 1
+                if not pathChanged:
+                    resLog += '%s\n\n(res change)  %s  -->  %s\n' % (modelName, res, commitRes)
+                    resLog+= '-' * 80
+                    resLog+='\n\n\n'
+                    ctr += 1
+                else:
+                    resLog += '(res change)  %s  -->  %s\n' % (res, commitRes)
+
+
+            if pathChanged:
+                resLog+= '-' * 80
+                resLog+= '\n\n\n'
+
 
         viewLog = ''
 
@@ -391,6 +448,17 @@ class MainWidget(MainWidgetUI):
 
         for modelName, res in self._modelActiveResNamesOriginal.iteritems():
             self._modelActiveResNames[modelName] = res
+
+            origResData = self._modelResDataOriginal[modelName]
+            currentResData = self._modelResData[modelName]
+
+
+            for resData in origResData:
+                origId = resData['resID']
+                origPath = resData['resPath']
+                for d in currentResData:
+                    if d['resID']==origId:
+                        d['resPath'] = origPath
 
         self._dataChanged = False
         self._updateAvailableResolution()
@@ -455,9 +523,20 @@ class MainWidget(MainWidgetUI):
             return
 
         for modelName, activeResName in self._modelActiveResNames.iteritems():
+
+            # Changing Active Res Name in the Dict
             self._modelDict[modelName]['activeRes'] = [  resDict['resID']
                                                        for resDict in self._modelResData[modelName]
                                                        if resDict['resName']==activeResName][0]
+
+            # Changing Res Path in the Dict
+            resDataList = self._modelDict[modelName]['resData']
+            resDataListChanged = self._modelResData[modelName]
+            for resData in resDataList:
+                resID = resData['resID']
+                oldPath = resData['resPath']
+                newPath = [r['resPath'] for r in resDataListChanged if r['resID']==resID][0]
+                resData['resPath'] = newPath
 
         # Writing changes to the scntoc file
         self._sr.write()

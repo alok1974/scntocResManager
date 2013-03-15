@@ -1,7 +1,7 @@
 ##########################################################################################
 ##########################################################################################
 ##                                                                                      ##
-##  Scenetoc Resolution Manager V 1.0 (c) 2013 Alok Gandhi (alok.gandhi2002@gmail.com)  ##
+##  Scenetoc Resolution Manager V 1.02 (c) 2013 Alok Gandhi (alok.gandhi2002@gmail.com)  ##
 ##                                                                                      ##
 ##                                                                                      ##
 ##  This program is free software: you can redistribute it and/or modify it             ##
@@ -16,9 +16,178 @@ import os
 import sys
 from PyQt4 import QtCore, QtGui
 import helpers
+from logger import Logger
 
 APP_STYLE = ("WindowsVista" if sys.platform.startswith('win')  else "Plastique")
 ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+
+class ResPathEditWidget(QtGui.QDialog):
+    def __init__(self, widget=None, dataChangedWidget=None, multiSelected=False, selectedRes='', selectedModel='', selectedModels=[], resData={}, resDataOrig={}, *args, **kwargs):
+        super(ResPathEditWidget, self).__init__(*args, **kwargs)
+        self.setModal(True)
+        self._widget = widget
+        self._multiSelected = multiSelected
+        self._selectedRes = selectedRes
+        self._selectedModel = selectedModel
+        self._dataChangedWidget = dataChangedWidget
+
+        StyleSheet().setColor(self)
+
+        if self._multiSelected:
+            self._selectedModels = selectedModels
+        else:
+            self._selectedModels = [self._selectedModel]
+
+        self._resData = resData
+        self._resDataOrig = resDataOrig
+
+        if self._widget:
+            self._text = str(self._widget.text())
+        else:
+            self._text = r'just\a\path\to\a\folder\with\a\file.ext'
+
+        # Set UI
+        self._initUI()
+
+        # Connect Signals
+        self._connectSignals()
+
+    def _initUI(self):
+        # Add Widgets
+        self._pathLabel = QtGui.QLabel('Edit Path :')
+        self._pathLineEdit = QtGui.QLineEdit()
+        self._pathLineEdit.setText(self._text)
+        self._pathLineEdit.setMinimumWidth(300)
+
+        self._notFoundLabel = QtGui.QLineEdit('     Pattern not found!')
+        self._notFoundLabel.setEnabled(False)
+        self._notFoundLabel.setMinimumSize(100, 40)
+        self._notFoundLabel.setFrame(False)
+        self._notFoundLabel.setStyleSheet("QLineEdit {background-color : rgb(255, 255, 0); color : rgb(100, 0, 0)}")
+        self._notFoundLabel.hide()
+
+        self._findLabel = QtGui.QLabel('Find : ')
+        self._findLineEdit = QtGui.QLineEdit()
+
+        self._replaceLabel = QtGui.QLabel('Replace : ')
+        self._replaceLineEdit = QtGui.QLineEdit()
+
+        self._wordCheckBox = QtGui.QCheckBox('Word')
+        self._ignoreCaseCheckBox = QtGui.QCheckBox('Ignore Case')
+
+        self._replaceBtn = QtGui.QPushButton('Replace')
+        self._okBtn = QtGui.QPushButton('Ok')
+
+        self._grid = QtGui.QGridLayout()
+        self._grid.setSpacing(10)
+
+        self._grid.addWidget(self._pathLabel, 0, 0)
+        self._grid.addWidget(self._pathLineEdit, 0, 1, 1, 2)
+
+        self._grid.addWidget(self._findLabel, 1, 0)
+        self._grid.addWidget(self._findLineEdit, 1, 1, 1, 2)
+
+        self._grid.addWidget(self._replaceLabel, 2, 0)
+        self._grid.addWidget(self._replaceLineEdit, 2, 1, 1, 2)
+
+        self._hLayout = QtGui.QHBoxLayout()
+        self._hLayout.addStretch(1)
+
+
+        self._hLayout.addWidget(self._notFoundLabel)
+        self._hLayout.addWidget(self._wordCheckBox)
+        self._hLayout.addWidget(self._ignoreCaseCheckBox)
+        self._hLayout.addWidget(self._replaceBtn)
+        self._hLayout.addWidget(self._okBtn)
+
+        self._grid.addLayout(self._hLayout, 3, 2, 1, 1)
+
+        self.setGeometry(200, 200, 300, 120)
+
+        self.setWindowTitle("Edit Resolution Path")
+
+        self.setLayout(self._grid)
+
+    def _connectSignals(self):
+        self._okBtn.clicked.connect(self._okBtnOnClicked)
+        self._replaceBtn.clicked.connect(self._replaceBtnOnClicked)
+
+
+    def _replaceBtnOnClicked(self):
+        if not str(self._findLineEdit.text()):
+            return
+
+        if not str(self._replaceLineEdit.text()):
+            return
+
+        pathStr = str(self._pathLineEdit.text())
+        find = str(self._findLineEdit.text())
+        replace = str(self._replaceLineEdit.text())
+        ignoreCase = bool(self._ignoreCaseCheckBox.checkState())
+        wholeWord = bool(self._wordCheckBox.checkState())
+
+        replacedText = helpers._replaceWord(inString=pathStr, inFind=find,
+                                            inReplace=replace, inIgnoreCase=ignoreCase,
+                                            inWholeWord=wholeWord)
+
+        if replacedText==pathStr:
+            self._notFoundLabel.show()
+            return
+        else:
+            self._notFoundLabel.hide()
+
+        self._pathLineEdit.setText(replacedText)
+        self._findLineEdit.setText("")
+        self._replaceLineEdit.setText("")
+
+    def _okBtnOnClicked(self):
+        if not self._widget:
+            return
+
+        newPath = str(self._pathLineEdit.text())
+        if not os.path.exists(newPath):
+            r, g, b = 120, 0, 0
+        else:
+            r, g, b = 0, 120, 0
+
+        self._widget.setStyleSheet("QLineEdit {background-color: rgb(230, 230, 230); color : rgb(%s, %s, %s)}" % (r, g, b))
+        self._widget.setText(newPath)
+        datachanged = self._setPath(newPath)
+        self._dataChangedWidget.setText(datachanged)
+
+        self.close()
+
+    def _setPath(self, path):
+        dataChanged = "0"
+        for modelName in self._selectedModels:
+            resData = [data for data in self._resData[modelName] if data['resName']==self._selectedRes][0]
+            resData['resPath'] = "file://%s" % path
+
+            resDataOrig = [data for data in self._resDataOrig[modelName] if data['resName']==self._selectedRes][0]
+            resPathOrig = resDataOrig['resPath'][7:]
+
+            if path!=resPathOrig:
+                dataChanged="1"
+
+        return dataChanged
+
+def clickable(widget):
+    # Re implementation of for the Res Path Double Click
+    class MouseDoubleClickFilter(QtCore.QObject):
+        _doubleClicked = QtCore.pyqtSignal()
+
+        def eventFilter(self, obj, event):
+            if obj==widget:
+                if event.type()==QtCore.QEvent.MouseButtonDblClick:
+                    self._doubleClicked.emit()
+                    return True
+
+            return False
+
+    filter = MouseDoubleClickFilter(widget)
+    widget.installEventFilter(filter)
+
+    return filter._doubleClicked
 
 class RecentFiles(object):
     def __init__(self, *args, **kwargs):
@@ -182,7 +351,7 @@ class HelpWidget(QtGui.QDialog):
 
         self._pg = 1
 
-        self._nbPages = 7
+        self._nbPages = 8
 
         self._pathCache = {}
 
@@ -325,10 +494,8 @@ class HelpWidget(QtGui.QDialog):
         self.close()
 
         te = self.tw.textEdit
-        p = te.palette()
-        p.setColor(QtGui.QPalette.Base, QtGui.QColor(36, 36, 36))
-        te.setPalette(p)
-        te.setTextColor(QtGui.QColor(227, 227, 227))
+        te.setStyleSheet("QTextEdit {background-color : rgb(36, 36, 36); color : rgb(227, 227, 227)}")
+
 
         te.setText(self._codeCache['licenseTxt'])
 
@@ -375,7 +542,7 @@ class MainWidgetUI(QtGui.QWidget):
         self._modelLabel = QtGui.QLabel(' <b>Available Models</b>  <i>ModelName    (Active Res)</i>')
         self._availableResLabel = QtGui.QLabel(' <b>Available Res</b> <i>(Check Box to Set Active Res)</i>')
         self._filterLabel = QtGui.QLabel('<b>Filter Model List by Active Res</b>')
-        self._resPathLabel = QtGui.QLabel(' <b>Res Path</b>')
+        self._resPathLabel = QtGui.QLabel(' <b>Res Path</b> <i>(Double Click to edit)</i>')
         self._resIDLabel = QtGui.QLabel(' <b>Res ID</b>')
         self._emptyLabel = QtGui.QLabel('')
 
@@ -439,10 +606,17 @@ class MainWidgetUI(QtGui.QWidget):
         self._resIDLineEdit.setReadOnly(True)
         self._resIDLineEdit.setToolTip('ID of  the selected resolutions.')
 
+        # Creating Hidden Data Changed Line Edit
+        self._dataChangedLineEdit = QtGui.QLineEdit()
+        self._dataChangedLineEdit.setText("0")
+        self._dataChangedLineEdit.hide()
 
         # Grid Layout Management
         self._grid = QtGui.QGridLayout()
         self._grid.setSpacing(10)
+
+        # Adding Hidden Data Changed Line Edit
+        self._grid.addWidget(self._dataChangedLineEdit, 0, 0)
 
         self._grid.addWidget(self._modelLabel, 0, 0)
         self._grid.addWidget(self._modelListWidget, 1, 0, 10, 1)
@@ -486,7 +660,7 @@ class MainWidgetUI(QtGui.QWidget):
         if self._hasFileloaded:
             return
 
-        self.close()
+        QtCore.QCoreApplication.instance().quit()
 
 
 class TestWidget(HelpWidget):

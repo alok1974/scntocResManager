@@ -1,7 +1,7 @@
 ##########################################################################################
 ##########################################################################################
 ##                                                                                      ##
-##  Scenetoc Resolution Manager V 1.0 (c) 2013 Alok Gandhi (alok.gandhi2002@gmail.com)  ##
+##  Scenetoc Resolution Manager V 1.02 (c) 2013 Alok Gandhi (alok.gandhi2002@gmail.com)  ##
 ##                                                                                      ##
 ##                                                                                      ##
 ##  This program is free software: you can redistribute it and/or modify it             ##
@@ -12,9 +12,9 @@
 ##########################################################################################
 ##########################################################################################
 
-
 import os
 import xml.dom.minidom
+from logger import Logger
 
 ERROR_TYPES = {
                 0 : 'No .scntoc file specified !',
@@ -135,6 +135,16 @@ class ScenetocReader(object):
             if modelNode.attributes["active_resolution"].value != modelData['activeRes']:
                 modelNode.attributes["active_resolution"].value = modelData['activeRes']
                 dataChanged = True
+
+            for childNode in modelNode.childNodes:
+                if childNode.nodeType==childNode.ELEMENT_NODE:
+                    id = childNode.attributes['id'].value
+                    path = childNode.attributes['href'].value
+
+                    changedPath = [d['resPath'] for d in modelData['resData'] if d['resID']==id][0]
+                    if path!=changedPath:
+                        childNode.attributes['href'].value = changedPath
+                        dataChanged = True
 
         if dataChanged:
             with open(self._file, 'w') as f:

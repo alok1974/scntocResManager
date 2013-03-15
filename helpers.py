@@ -1,7 +1,7 @@
 ##########################################################################################
 ##########################################################################################
 ##                                                                                      ##
-##  Scenetoc Resolution Manager V 1.0 (c) 2013 Alok Gandhi (alok.gandhi2002@gmail.com)  ##
+##  Scenetoc Resolution Manager V 1.02 (c) 2013 Alok Gandhi (alok.gandhi2002@gmail.com)  ##
 ##                                                                                      ##
 ##                                                                                      ##
 ##  This program is free software: you can redistribute it and/or modify it             ##
@@ -12,8 +12,10 @@
 ##########################################################################################
 ##########################################################################################
 
+import re
 import os
 import itertools
+from logger import Logger
 
 BASE_COLOR = [170, 190, 210]
 SEP1 = '     ('
@@ -33,7 +35,6 @@ def _getNumberFromString(s):
 
     return str(sum([(pow(10,i) * p) for i, p in enumerate(n)])).zfill(len(n))
 
-
 def _sortNames(inNames):
     l = []
     for name in inNames:
@@ -52,7 +53,6 @@ def _sortNames(inNames):
     l.sort()
 
     return [t[1] for t in l]
-
 
 def _extractRootAndSort(inNames):
     modelNames = []
@@ -159,3 +159,21 @@ def _getModelNameParts(inModelNameStr):
     modelName = modelName.strip()
     modelRes = modelRes.strip()
     return modelName, modelRes
+
+def _replaceWord(inString='', inFind='', inReplace='', inIgnoreCase=False, inWholeWord=False):
+    flag = (re.IGNORECASE if inIgnoreCase else 0)
+    find = (r'\b({0})\b'.format(inFind) if inWholeWord else inFind)
+    pat = re.compile(find, flags=flag)
+
+    return pat.sub(inReplace, inString)
+
+def _getCommonPath(inSelectedModels, inSelectedRes, inResDataDict):
+    paths = []
+    for modelName in inSelectedModels:
+        resData = [data for data in inResDataDict[modelName] if data['resName']==inSelectedRes][0]
+        paths.append(resData['resPath'])
+
+    if len(set(paths))==1:
+        return paths[0]
+
+    return '       <No Common Path>'
