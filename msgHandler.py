@@ -99,6 +99,7 @@ def _makePara(inText):
 
     return finalStr
 
+
 def _wrapMsg(inMsg, args=[]):
     msg = _addArgs(inMsg, inArgs=args)
     msg = _makePara(msg)
