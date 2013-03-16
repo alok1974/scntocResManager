@@ -577,7 +577,7 @@ class MainWidgetUI(QtGui.QWidget):
         self._viewBtn  = QtGui.QPushButton('View Changes')
         self._viewBtn.setToolTip('View the changes to be commited.')
 
-        self._resetBtn  = QtGui.QPushButton('Reset All Res to Original')
+        self._resetBtn  = QtGui.QPushButton('Reset All')
         self._resetBtn.setToolTip('Reset data to original file at open time.')
 
         self._selectBtn  = QtGui.QPushButton('Res to Model Lookup')
