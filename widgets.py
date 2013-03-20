@@ -636,11 +636,11 @@ class MainWidgetUI(QtGui.QWidget):
         self._grid.addWidget(self._avResListWidget, 1, 2)
 
         self._grid.addWidget(self._filterLabel, 3, 2)
-        self._grid.addWidget(self._filterListWidget, 4, 2, 4, 4)
+        self._grid.addWidget(self._filterListWidget, 4, 2, 4, 2)
 
-        self._grid.addWidget(self._applyFilterBtn, 9, 2, 1, 4)
+        self._grid.addWidget(self._applyFilterBtn, 9, 2, 1, 2)
 
-        self._grid.addWidget(self._resetFilterBtn, 10, 2, 1, 4)
+        self._grid.addWidget(self._resetFilterBtn, 10, 2, 1, 2)
 
         self._grid.addWidget(self._nbSelectedModelLabel, 11, 2)
 
