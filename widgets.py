@@ -647,9 +647,8 @@ class MainWidgetUI(QtGui.QWidget):
         self._vLayout = QtGui.QVBoxLayout()
         self._vLayout.addStretch(100)
 
-        self._grid.addWidget(self._resPathLabel, 0, 3, 1, 1)
+        self._vLayout.addWidget(self._resPathLabel)
         self._vLayout.addWidget(self._resPathLineEdit)
-
         self._vLayout.addWidget(self._resIDLabel)
         self._vLayout.addWidget(self._resIDLineEdit)
 
@@ -659,7 +658,7 @@ class MainWidgetUI(QtGui.QWidget):
         self._vLayout.addWidget(self._applyBtn)
         self._vLayout.addWidget(self._cancelBtn)
 
-        self._grid.addLayout(self._vLayout, 1, 3)
+        self._grid.addLayout(self._vLayout, 0, 3, 2, 1)
 
         self._mainLayout = QtGui.QVBoxLayout(self)
         self._mainLayout.addLayout(self._grid)
