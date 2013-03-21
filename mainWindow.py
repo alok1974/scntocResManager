@@ -114,13 +114,23 @@ class MainWidget(MainWidgetUI):
         self._modelAvailableResNames = dict([(modelName, [d['resName']for d in modelData['resData']]) for modelName, modelData in self._modelDict.iteritems()])
         self._allAvailableRes = helpers._flattenList([resNames for _, resNames in self._modelAvailableResNames.iteritems()], returnUnique=True)
 
-    def _initWidgets(self):
+    def _resetAll(self):
         self._modelListWidget.clear()
         self._avResListWidget.clear()
         self._filterListWidget.clear()
         self._resIDLineEdit.setText('')
         self._resPathLineEdit.setText('')
         self._nbModelLabel.setText('')
+
+        self._modelListWidget.clear()
+        self._avResListWidget.clear()
+        self._filterListWidget.clear()
+
+        self._resPathLineEdit.setText('')
+        self._resIDLineEdit.setText('')
+
+    def _initWidgets(self):
+        self._resetAll()
 
         # Init Model Name List Widget
         self._updateModelListWidget()
@@ -673,6 +683,28 @@ class MainWindow(QtGui.QMainWindow):
         ss.setColor(self._mainWidget)
         ss.setColor(self, app= QtCore.QCoreApplication.instance())
 
+    def _onFileOpen(self, inFile=''):
+        mw = self._mainWidget
+
+        mw._writeScntoc(suppressMsg=True)
+
+        mw._dataChanged = False
+        mw._file = None
+        mw._hasFileloaded = False
+
+        mw._resetAll()
+
+        if not inFile:
+            fg = QtGui.QFileDialog()
+            f = str(fg.getOpenFileName(self, 'Open file', '', "Scntoc File (*.scntoc)"))
+
+        mw.load(f)
+        mw.run()
+
+        self._recentFiles._addFile(f)
+        self._updateRecentMenu()
+        self.setWindowTitle("%s      %s" % (WIN_TITLE, inFile))
+
     def _fileOpenMappedSlot(self, inFile):
         if not os.path.exists(inFile):
             msgHandler._pop(self, 6, extraArgs=[inFile])
@@ -688,6 +720,8 @@ class MainWindow(QtGui.QMainWindow):
         mw._file = None
         mw._hasFileloaded = False
 
+        mw._resetAll()
+
         mw.load(inFile)
         mw.run()
 
@@ -695,25 +729,6 @@ class MainWindow(QtGui.QMainWindow):
         self._updateRecentMenu()
         self.setWindowTitle("%s      %s" % (WIN_TITLE, inFile))
 
-    def _onFileOpen(self, inFile=''):
-        mw = self._mainWidget
-
-        mw._writeScntoc(suppressMsg=True)
-
-        mw._dataChanged = False
-        mw._file = None
-        mw._hasFileloaded = False
-
-        if not inFile:
-            fg = QtGui.QFileDialog()
-            f = str(fg.getOpenFileName(self, 'Open file', '', "Scntoc File (*.scntoc)"))
-
-        mw.load(f)
-        mw.run()
-
-        self._recentFiles._addFile(f)
-        self._updateRecentMenu()
-        self.setWindowTitle("%s      %s" % (WIN_TITLE, inFile))
 
 
     def _onAboutAction(self):
