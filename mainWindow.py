@@ -407,7 +407,7 @@ class MainWidget(MainWidgetUI):
                         resLog += '%s\n\n' % modelName
 
                     noChange = False
-                    resLog += '(path change)  %s to - %s\n' % (oldPath, newPath)
+                    resLog += '(path change)  %s to - %s\n' % (str(oldPath)[7:], str(newPath)[7:])
                     ctr += 1
                     pathChanged = True
 
@@ -647,8 +647,8 @@ class MainWindow(QtGui.QMainWindow):
         self._recentMenu.clear()
         files = self._recentFiles._fetchRecent()
 
-        for file in files:
-            fileAction = QtGui.QAction(file, self)
+        for index, file in enumerate(files):
+            fileAction = QtGui.QAction('%s. %s' % (index + 1, file), self)
             fileAction.triggered.connect(functools.partial(self._fileOpenMappedSlot, file))
             self._recentMenu.addAction(fileAction)
 
