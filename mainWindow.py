@@ -417,7 +417,7 @@ class MainWidget(MainWidgetUI):
                         resLog += '%s\n\n' % modelName
 
                     noChange = False
-                    resLog += '(path change)  %s to - %s\n' % (str(oldPath)[7:], str(newPath)[7:])
+                    resLog += '(PATH CHANGE)  %s  -->  %s\n' % (str(oldPath)[7:], str(newPath)[7:])
                     ctr += 1
                     pathChanged = True
 
@@ -426,12 +426,12 @@ class MainWidget(MainWidgetUI):
             if res!=commitRes:
                 noChange = False
                 if not pathChanged:
-                    resLog += '%s\n\n(res change)  %s  -->  %s\n' % (modelName, res, commitRes)
+                    resLog += '%s\n\n(RES CHANGE)  %s  -->  %s\n' % (modelName, res, commitRes)
                     resLog+= '-' * 80
                     resLog+='\n\n\n'
                     ctr += 1
                 else:
-                    resLog += '(res change)  %s  -->  %s\n' % (res, commitRes)
+                    resLog += '(RES CHANGE)  %s  -->  %s\n' % (res, commitRes)
 
 
             if pathChanged:
