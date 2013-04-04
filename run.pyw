@@ -20,7 +20,14 @@
 ##                                                                                       ##
 ###########################################################################################
 ###########################################################################################
+import os
+import sys
+
+ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+
+if not ROOT_DIR in sys.path:
+    sys.path.append(ROOT_DIR)
 
 if __name__ == "__main__":
-    from mainWindow import run
+    from gui.mainWindow import run
     run()

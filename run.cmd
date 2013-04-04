@@ -1,1 +1,0 @@
-c:\python26\python.exe run.py

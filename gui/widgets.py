@@ -28,7 +28,7 @@ import helpers
 from logger import Logger
 
 APP_STYLE = ("WindowsVista" if sys.platform.startswith('win')  else "Plastique")
-ROOT_DIR = os.path.dirname(os.path.abspath(__file__))
+ROOT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 
 class ResPathEditWidget(QtGui.QDialog):
     def __init__(self, widget=None, dataChangedWidget=None, multiSelected=False, selectedRes='', selectedModel='', selectedModels=[], resData={}, resDataOrig={}, *args, **kwargs):
