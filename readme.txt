@@ -1,6 +1,6 @@
 *****************************************************************************************************
 *
-* Scenetoc Res Manager v 1.0 (c) 2013 Alok Gandhi (alok.gandhi2002@gmail.com)
+* Scenetoc Res Manager v 1.02 (c) 2013 Alok Gandhi (alok.gandhi2002@gmail.com)
 *
 * This program is free software: you can redistribute it and/or modify it under the terms of the GNU * General Public License, Version 3, 29 June 2007 as published by the Free Software Foundation  * <http://fsf.org/>.
 *
@@ -28,6 +28,8 @@ The sample files can be found in the folder ..\sampleSceneTocFiles. This folder 
 
 3. The sample.scntoc.bak is a copy of the sample.scntoc file as a backup in case you want to revert to the original after making changes to the sample.scntoc file.
 
+4. sample_large.scntoc and it's backup files have more data to test(10,000 models).
+
 
 -----------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------
@@ -46,10 +48,10 @@ You will need the following installed on your machine:
 To Run:
 
 Manually:
-Run the file ../run.py
+Run the file ../run.pyw
 
 Programatically (in your scripts or modules):
-from scenetocResManager import mainWindow
+from scenetocResManager.gui import mainWindow
 mainWindow.run()
 
 -----------------------------------------------------------------------------------------------------
