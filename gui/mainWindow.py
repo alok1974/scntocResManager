@@ -646,7 +646,7 @@ class MainWindow(QtGui.QMainWindow):
         helpMenu.addAction(helpAction)
         helpMenu.addAction(aboutAction)
 
-        self.move(100, 100)
+        self.move(100, 10)
 
         self.setWindowTitle(WIN_TITLE)
 
