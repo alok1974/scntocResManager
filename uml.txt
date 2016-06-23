@@ -1,0 +1,227 @@
++---------------+
+| QtGui.QDialog |
++---------------+
+     .                                                            
+    /_\                                                           
+     |                [ QtGui.QDialog ]          [ QtGui.QDialog ]
+     |                        .                       .           
+     |                       /_\                     /_\          
+     |                        |                       |           
+     |                        |                       |           
++------------+       +-------------------+       +------------+   
+| HelpWidget |       | ResPathEditWidget |       | TextWidget |   
++------------+       +-------------------+       +------------+   
+     .                               
+    /_\                              
+     |                               
+     |                               
+     |                               
+     |                               
+     |                               
++------------+                       
+| TestWidget |                       
+|------------|                       
+| __init__   |  ---->  [ TextWidget ]
++------------+                       
+                 
+                 
+                 
+                 
++---------------+
+| QtGui.QWidget |
++---------------+
+              .                 
+             /_\                
+              |                 
+              |                 
+              |                 
+              |                 
+              |                 
++------------------------------+
+|         MainWidgetUI         |
++------------------------------+
+              .                                                        
+             /_\                                                       
+              |                                                        
+              |                                                        
+              |                                                        
+              |                                                        
+              |                                                        
++------------------------------+                                       
+|          MainWidget          |                                       
+|------------------------------|                                       
+| _file                        |  ---->  [ ScenetocReader ]            
+| _connected                   |  ---->  [ helpers._flattenList ]      
+| _dataChanged                 |  ---->  [ TextWidget ]                
+| _sr                          |  ---->  [ helpers._getModelNameParts ]
+| tw                           |  ---->  [ ResPathEditWidget ]         
+| _modelDict                   |  ---->  [ helpers._sortAndMakeColors ]
+| _hasFileloaded               |                                       
+| _selectedModelName           |                                       
+| _selectedModelNames          |                                       
+| _selectedResName             |                                       
+| _multiSelected               |                                       
+| _modelNames                  |                                       
+| _nbModels                    |                                       
+| _modelNameIndices            |                                       
+| _modelActiveResNames         |                                       
+| _modelActiveResNamesOriginal |                                       
+| _modelResData                |                                       
+| _modelResDataOriginal        |                                       
+| _modelAvailableResNames      |                                       
+| _allAvailableRes             |                                       
+| rw                           |                                       
+| _activeResName               |                                       
+|------------------------------|                                       
+| __init__                     |                                       
+| _initUI                      |                                       
+| _dataChanged                 |                                       
+| fget                         |                                       
+| fset                         |                                       
+| load                         |                                       
+| run                          |                                       
+| _initData                    |                                       
+| _resetAll                    |                                       
+| _initWidgets                 |                                       
+| _connectSignals              |                                       
+| _handleDoubleClick           |                                       
+| _updateModelListWidget       |                                       
+| _updateAvailableResolution   |                                       
+| _updateResPathAndID          |                                       
+| _updateAllResListWidget      |                                       
+| _modelNameOnSelectionChange  |                                       
+| _checkBoxOnClicked           |                                       
+| _setActiveResolution         |                                       
+| _updateModelNamesWithRes     |                                       
+| _filterOnClicked             |                                       
+| _handleFilterClicks          |                                       
+| _offloadBtnOnClicked         |                                       
+| _viewBtnOnClicked            |                                       
+| _resetBtnOnClicked           |                                       
+| _applyFilterBtnOnClicked     |                                       
+| _resetFilterBtnOnClicked     |                                       
+| _applyBtnOnClicked           |                                       
+| _cancelBtnOnClicked          |                                       
+| _writeScntoc                 |                                       
+| _closeMsg                    |                                       
++------------------------------+                                       
+            
+            
+            
+            
++----------+
+|  object  |
++----------+
+    .                                                                                                                                    
+   /_\                                                                                                                                   
+    |                 [ object ]                [ object ]                 [ object ]               [ object ]              [ object ]   
+    |                     .                         .                          .                        .                       .        
+    |                    /_\                       /_\                        /_\                      /_\                     /_\       
+    |                     |                         |                          |                        |                       |        
+    |                     |                         |                          |                        |                       |        
++----------+       +---------------+       +--------------------+       +----------------+       +----------------+       +-------------+
+|   Test   |       |     Logger    |       |     StyleSheet     |       | TracebackError |       | ScenetocReader |       | RecentFiles |
+|----------|       |---------------|       |--------------------|       |----------------|       +----------------+       +-------------+
+| __init__ |       | level         |       | STYLESHEET_OPTIONS |       | trace          |                                               
+| runTest  |       | criticalFunc  |       | prefFile           |       |----------------|                                               
++----------+       | infoFunc      |       | style              |       | __init__       |                                               
+                   | warningFunc   |       |--------------------|       | asString       |                                               
+                   | debugFunc     |       | __init__           |       +----------------+                                               
+                   | errorFunc     |       | _createPrefs       |                                                                        
+                   | tracebackFunc |       | _readPrefs         |                                                                        
+                   | separatorFunc |       | _writePrefs        |                                                                        
+                   | spaceFunc     |       | setColor           |                                                                        
+                   |---------------|       +--------------------+                                                                        
+                   | onDebug       |                                                                                                     
+                   | onWarning     |                                                                                                     
+                   | onCritical    |                                                                                                     
+                   | onError       |                                                                                                     
+                   | onInfo        |                                                                                                     
+                   | onTraceback   |                                                                                                     
+                   | onSeparator   |                                                                                                     
+                   | onSpace       |                                                                                                     
+                   | warning       |                                                                                                     
+                   | info          |                                                                                                     
+                   | debug         |                                                                                                     
+                   | error         |                                                                                                     
+                   | critical      |                                                                                                     
+                   | traceback     |                                                                                                     
+                   | _buildString  |                                                                                                     
+                   | getLogger     |                                                                                                     
+                   | setLevel      |                                                                                                     
+                   | getLevel      |                                                                                                     
+                   | addSeparator  |                                                                                                     
+                   | addSpace      |                                                                                                     
+                   +---------------+                                                                                                     
+                         
+                         
+                         
+                         
++-----------------------+
+|   QtGui.QMainWindow   |
++-----------------------+
+           .                                               
+          /_\                                              
+           |                                               
+           |                                               
+           |                                               
+           |                                               
+           |                                               
++-----------------------+                                  
+|       MainWindow      |                                  
+|-----------------------|                                  
+| _mainWidget           |  ---->  [ RecentFiles ]          
+| _recentFiles          |  ---->  [ MainWidget ]           
+| _recentMenu           |  ---->  [ HelpWidget ]           
+| hw                    |  ---->  [ xml.dom.minidom.parse ]
+|-----------------------|                                  
+| __init__              |                                  
+| _updateRecentMenu     |                                  
+| _onDefaultStyleAction |                                  
+| _onDarkStyleAction    |                                  
+| _onSoftStyleAction    |                                  
+| _onMayaStyleAction    |                                  
+| _onNukeStyleAction    |                                  
+| _setTheme             |                                  
+| _onFileOpen           |                                  
+| _fileOpenMappedSlot   |                                  
+| _onAboutAction        |                                  
+| _onHelpAction         |                                  
+| _showHelpWidget       |                                  
+| closeEvent            |                                  
++-----------------------+                                  
+                          
+                          
+                          
+                          
++------------------------+
+|     QtCore.QObject     |
++------------------------+
+           .              
+          /_\             
+           |              
+           |              
+           |              
+           |              
+           |              
++------------------------+
+| MouseDoubleClickFilter |
+|------------------------|
+| _doubleClicked         |
+|------------------------|
+| eventFilter            |
++------------------------+
+                                                                                                  
+                                                                                                  
+                                                                                                  
+                                                                                                  
++----------------------------+       +----------------------+       +----------------------------+
+| helpers._sortAndMakeColors |       | helpers._flattenList |       | helpers._getModelNameParts |
++----------------------------+       +----------------------+       +----------------------------+
+                         
+                         
+                         
+                         
++-----------------------+
+| xml.dom.minidom.parse |
++-----------------------+
