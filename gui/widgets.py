@@ -1,37 +1,42 @@
-###########################################################################################
-###########################################################################################
-##                                                                                       ##
-##  Scenetoc Resolution Manager V 1.02 (c) 2013 Alok Gandhi (alok.gandhi2002@gmail.com)  ##
-##                                                                                       ##
-##                                                                                       ##
-##  This file is part of Scenetoc Res Manager.                                           ##
-##                                                                                       ##
-##  Scenetoc Res Manager is free software: you can redistribute it and/or modify         ##
-##  it under the terms of the GNU General Public License, Version 3, 29 June 2007        ##
-##  as published by the Free Software Foundation,                                        ##
-##                                                                                       ##
-##  Scenetoc Res Manager is distributed in the hope that it will be useful,              ##
-##  but WITHOUT ANY WARRANTY; without even the implied warranty of                       ##
-##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                        ##
-##  GNU General Public License for more details.                                         ##
-##                                                                                       ##
-##  You should have received a copy of the GNU General Public License                    ##
-##  along with Scenetoc Res Manager.  If not, see <http://www.gnu.org/licenses/>.        ##
-##                                                                                       ##
-###########################################################################################
-###########################################################################################
-
+#  Scenetoc Resolution Manager V 1.02 (c) 2013 Alok Gandhi (alok.gandhi2002@gmail.com)
+#
+#
+#  This file is part of Scenetoc Res Manager.
+#
+#  Scenetoc Res Manager is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License, Version 3, 29 June 2007
+#  as published by the Free Software Foundation,
+#
+#  Scenetoc Res Manager is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with Scenetoc Res Manager.  If not, see <http://www.gnu.org/licenses/>.
 import os
 import sys
 from PyQt4 import QtCore, QtGui
 import helpers
-from logger import Logger
 
-APP_STYLE = ("WindowsVista" if sys.platform.startswith('win')  else "Plastique")
+APP_STYLE = ("WindowsVista" if sys.platform.startswith('win') else "Plastique")
 ROOT_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')
 
+
 class ResPathEditWidget(QtGui.QDialog):
-    def __init__(self, widget=None, dataChangedWidget=None, multiSelected=False, selectedRes='', selectedModel='', selectedModels=[], resData={}, resDataOrig={}, *args, **kwargs):
+    def __init__(
+                    self,
+                    widget=None,
+                    dataChangedWidget=None,
+                    multiSelected=False,
+                    selectedRes='',
+                    selectedModel='',
+                    selectedModels=[],
+                    resData={},
+                    resDataOrig={},
+                    *args,
+                    **kwargs):
+
         super(ResPathEditWidget, self).__init__(*args, **kwargs)
         self.setModal(True)
         self._widget = widget
@@ -102,7 +107,6 @@ class ResPathEditWidget(QtGui.QDialog):
         self._hLayout = QtGui.QHBoxLayout()
         self._hLayout.addStretch(1)
 
-
         self._hLayout.addWidget(self._notFoundLabel)
         self._hLayout.addWidget(self._wordCheckBox)
         self._hLayout.addWidget(self._ignoreCaseCheckBox)
@@ -121,7 +125,6 @@ class ResPathEditWidget(QtGui.QDialog):
         self._okBtn.clicked.connect(self._okBtnOnClicked)
         self._replaceBtn.clicked.connect(self._replaceBtnOnClicked)
 
-
     def _replaceBtnOnClicked(self):
         if not str(self._findLineEdit.text()):
             return
@@ -139,7 +142,7 @@ class ResPathEditWidget(QtGui.QDialog):
                                             inReplace=replace, inIgnoreCase=ignoreCase,
                                             inWholeWord=wholeWord)
 
-        if replacedText==pathStr:
+        if replacedText == pathStr:
             self._notFoundLabel.show()
             return
         else:
@@ -159,7 +162,8 @@ class ResPathEditWidget(QtGui.QDialog):
         else:
             r, g, b = 0, 120, 0
 
-        self._widget.setStyleSheet("QLineEdit {background-color: rgb(230, 230, 230); color : rgb(%s, %s, %s)}" % (r, g, b))
+        self._widget.setStyleSheet(
+            "QLineEdit {background-color: rgb(230, 230, 230); color : rgb(%s, %s, %s)}" % (r, g, b))
         self._widget.setText(newPath)
         datachanged = self._setPath(newPath)
         self._dataChangedWidget.setText(datachanged)
@@ -169,16 +173,17 @@ class ResPathEditWidget(QtGui.QDialog):
     def _setPath(self, path):
         dataChanged = "0"
         for modelName in self._selectedModels:
-            resData = [data for data in self._resData[modelName] if data['resName']==self._selectedRes][0]
+            resData = [data for data in self._resData[modelName] if data['resName'] == self._selectedRes][0]
             resData['resPath'] = "file://%s" % path
 
-            resDataOrig = [data for data in self._resDataOrig[modelName] if data['resName']==self._selectedRes][0]
+            resDataOrig = [data for data in self._resDataOrig[modelName] if data['resName'] == self._selectedRes][0]
             resPathOrig = resDataOrig['resPath'][7:]
 
-            if path!=resPathOrig:
-                dataChanged="1"
+            if path != resPathOrig:
+                dataChanged = "1"
 
         return dataChanged
+
 
 def clickable(widget):
     # Re implementation of for the Res Path Double Click
@@ -186,8 +191,8 @@ def clickable(widget):
         _doubleClicked = QtCore.pyqtSignal()
 
         def eventFilter(self, obj, event):
-            if obj==widget:
-                if event.type()==QtCore.QEvent.MouseButtonDblClick:
+            if obj == widget:
+                if event.type() == QtCore.QEvent.MouseButtonDblClick:
                     self._doubleClicked.emit()
                     return True
 
@@ -197,6 +202,7 @@ def clickable(widget):
     widget.installEventFilter(filter)
 
     return filter._doubleClicked
+
 
 class RecentFiles(object):
     def __init__(self, *args, **kwargs):
@@ -220,7 +226,7 @@ class RecentFiles(object):
         self.files = t.split('"')
 
         # Cleaning any empty values
-        self.files = [f for f in self.files if f]
+        self.files = [file_ for file_ in self.files if file_]
 
         return self.files
 
@@ -241,15 +247,15 @@ class RecentFiles(object):
         self.files.insert(0, toAdd)
         self._writeRecent()
 
-
     def _removeFile(self, toRemove):
         files = self._fetchRecent()
         files.remove(toRemove)
 
         self._writeRecent()
 
+
 class StyleSheet(object):
-    STYLESHEET_OPTIONS = ['dark', 'soft', 'maya', 'nuke',]
+    STYLESHEET_OPTIONS = ['dark', 'soft', 'maya', 'nuke', ]
 
     def __init__(self, *args, **kwargs):
         super(StyleSheet, self).__init__(*args, **kwargs)
@@ -267,7 +273,7 @@ class StyleSheet(object):
         with open(self.prefFile, 'r') as f:
             s = f.readlines()
 
-        self.style= s[0].split(':')[1]
+        self.style = s[0].split(':')[1]
 
         return self.style
 
@@ -305,6 +311,7 @@ class StyleSheet(object):
             app.setStyle(QtGui.QStyleFactory.create("Plastique"))
 
         widget.setStyleSheet(s)
+
 
 class TextWidget(QtGui.QDialog):
     def __init__(self, *args, **kwargs):
@@ -349,6 +356,7 @@ class TextWidget(QtGui.QDialog):
     def _okBtnOnClicked(self):
         self.textEdit.sizeHint()
         self.close()
+
 
 class HelpWidget(QtGui.QDialog):
     def __init__(self, help=False, *args, **kwargs):
@@ -472,14 +480,14 @@ class HelpWidget(QtGui.QDialog):
         self.close()
 
     def _nextBtnOnClicked(self):
-        if self._pg==self._nbPages:
+        if self._pg == self._nbPages:
             return
 
         self._setHtml(pageNo=(self._pg + 1))
         self._pg += 1
 
     def _prevBtnOnClicked(self):
-        if self._pg==1:
+        if self._pg == 1:
             return
 
         self._setHtml(pageNo=(self._pg - 1))
@@ -505,13 +513,11 @@ class HelpWidget(QtGui.QDialog):
         te = self.tw.textEdit
         te.setStyleSheet("QTextEdit {background-color : rgb(36, 36, 36); color : rgb(227, 227, 227)}")
 
-
         te.setText(self._codeCache['licenseTxt'])
 
         self.tw.setWindowTitle('License')
 
         self.tw.show()
-
 
     def _setHtml(self, pageNo=1):
         html = ('help%sHtml' % (str(pageNo).zfill(2)) if self._help else 'aboutHtml')
@@ -525,12 +531,10 @@ class HelpWidget(QtGui.QDialog):
                         QtCore.QVariant(QtGui.QImage(self._pathCache['bgJpg']))
                         )
 
-
         doc.addResource(QtGui.QTextDocument.StyleSheetResource,
                         QtCore.QUrl('style.css'),
                         self._codeCache['styleCss']
                         )
-
 
         doc.addResource(QtGui.QTextDocument.ImageResource,
                         QtCore.QUrl('images/%s' % imgName),
@@ -540,6 +544,7 @@ class HelpWidget(QtGui.QDialog):
         doc.setHtml(self._codeCache[html])
 
         self.textEdit.setDocument(doc)
+
 
 class MainWidgetUI(QtGui.QWidget):
     def __init__(self, *args, **kwargs):
@@ -561,35 +566,30 @@ class MainWidgetUI(QtGui.QWidget):
         self._nbSelectedModelLabel = QtGui.QLabel('<b>  <i>Selected Models : </i></b>')
         self._nbSelectedModelLabel.setToolTip('Total number of selected models.')
 
-
-        # Buttons
-        #btnHeight = 50
-
-        self._applyFilterBtn  = QtGui.QPushButton('Apply Filter')
+        self._applyFilterBtn = QtGui.QPushButton('Apply Filter')
         self._applyFilterBtn.setToolTip('Apply filter on the Model List.')
 
-        self._resetFilterBtn  = QtGui.QPushButton('Reset Filter')
+        self._resetFilterBtn = QtGui.QPushButton('Reset Filter')
         self._resetFilterBtn.setToolTip('Reset filters.')
 
-        self._offloadBtn  = QtGui.QPushButton('Offload All')
+        self._offloadBtn = QtGui.QPushButton('Offload All')
         self._offloadBtn.setToolTip('Offload All Models.')
 
-        self._viewBtn  = QtGui.QPushButton('View Changes')
+        self._viewBtn = QtGui.QPushButton('View Changes')
         self._viewBtn.setToolTip('View the changes to be commited.')
 
-        self._resetBtn  = QtGui.QPushButton('Reset All')
+        self._resetBtn = QtGui.QPushButton('Reset All')
         self._resetBtn.setToolTip('Reset data to original file at open time.')
 
-        self._selectBtn  = QtGui.QPushButton('Res to Model Lookup')
+        self._selectBtn = QtGui.QPushButton('Res to Model Lookup')
         self._selectBtn.setToolTip('Select all models based on a particular resolution.')
 
-        self._applyBtn  = QtGui.QPushButton('Write and Close')
+        self._applyBtn = QtGui.QPushButton('Write and Close')
         self._applyBtn.setToolTip('Apply the changes and write the scntoc file on disk.')
 
-        self._cancelBtn  = QtGui.QPushButton('Cancel')
+        self._cancelBtn = QtGui.QPushButton('Cancel')
         self._cancelBtn.setToolTip('Close without saving any changes.')
         self._cancelBtn.clicked.connect(self._cancelBtnOnClickedBase)
-
 
         # QLists and QLines
         self._modelListWidget = QtGui.QListWidget()
@@ -663,7 +663,6 @@ class MainWidgetUI(QtGui.QWidget):
         self._mainLayout = QtGui.QVBoxLayout(self)
         self._mainLayout.addLayout(self._grid)
 
-
     def _cancelBtnOnClickedBase(self):
         if self._hasFileloaded:
             return
@@ -674,7 +673,6 @@ class MainWidgetUI(QtGui.QWidget):
 class TestWidget(HelpWidget):
     def __init__(self, *args, **kwargs):
         super(TestWidget, self).__init__(help=False, *args, **kwargs)
-        #self._setupUI()
 
 if __name__ == '__main__':
     app = QtGui.QApplication(sys.argv)

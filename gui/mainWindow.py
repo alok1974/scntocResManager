@@ -1,26 +1,19 @@
-###########################################################################################
-###########################################################################################
-##                                                                                       ##
-##  Scenetoc Resolution Manager V 1.02 (c) 2013 Alok Gandhi (alok.gandhi2002@gmail.com)  ##
-##                                                                                       ##
-##                                                                                       ##
-##  This file is part of Scenetoc Res Manager.                                           ##
-##                                                                                       ##
-##  Scenetoc Res Manager is free software: you can redistribute it and/or modify         ##
-##  it under the terms of the GNU General Public License, Version 3, 29 June 2007        ##
-##  as published by the Free Software Foundation,                                        ##
-##                                                                                       ##
-##  Scenetoc Res Manager is distributed in the hope that it will be useful,              ##
-##  but WITHOUT ANY WARRANTY; without even the implied warranty of                       ##
-##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                        ##
-##  GNU General Public License for more details.                                         ##
-##                                                                                       ##
-##  You should have received a copy of the GNU General Public License                    ##
-##  along with Scenetoc Res Manager.  If not, see <http://www.gnu.org/licenses/>.        ##
-##                                                                                       ##
-###########################################################################################
-###########################################################################################
-
+#  Scenetoc Resolution Manager V 1.02 (c) 2013 Alok Gandhi (alok.gandhi2002@gmail.com)
+#
+#
+#  This file is part of Scenetoc Res Manager.
+#
+#  Scenetoc Res Manager is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License, Version 3, 29 June 2007
+#  as published by the Free Software Foundation,
+#
+#  Scenetoc Res Manager is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with Scenetoc Res Manager.  If not, see <http://www.gnu.org/licenses/>.
 import sys
 import os
 import functools
@@ -30,9 +23,9 @@ from widgets import MainWidgetUI, TextWidget, HelpWidget, StyleSheet, RecentFile
 from scntocReader import ScenetocReader
 import helpers
 import msgHandler
-from logger import Logger
 
 WIN_TITLE = "Scenetoc Res Manager"
+
 
 class MainWidget(MainWidgetUI):
     def __init__(self, *args, **kwargs):
@@ -108,11 +101,23 @@ class MainWidget(MainWidgetUI):
         self._modelActiveResNamesOriginal = dict([(k, v['activeResName']) for k, v in self._modelDict.iteritems()])
 
         # Creating completely new dicts from scratch to prevent instances of the same objects
-        self._modelResData = dict([(k, [dict([(k1, v1) for k1, v1 in f.iteritems()]) for f in v['resData']]) for k, v in self._modelDict.iteritems()])
-        self._modelResDataOriginal = dict([(k, [dict([(k1, v1) for k1, v1 in f.iteritems()]) for f in v['resData']]) for k, v in self._modelDict.iteritems()])
+        self._modelResData = dict(
+                                    [(k, [dict([(k1, v1) for k1, v1 in f.iteritems()])
+                                     for f in v['resData']]) for k, v in self._modelDict.iteritems()]
+                                  )
 
-        self._modelAvailableResNames = dict([(modelName, [d['resName']for d in modelData['resData']]) for modelName, modelData in self._modelDict.iteritems()])
-        self._allAvailableRes = helpers._flattenList([resNames for _, resNames in self._modelAvailableResNames.iteritems()], returnUnique=True)
+        self._modelResDataOriginal = dict(
+                                            [(k, [dict([(k1, v1) for k1, v1 in f.iteritems()])
+                                             for f in v['resData']]) for k, v in self._modelDict.iteritems()]
+                                          )
+
+        self._modelAvailableResNames = dict(
+                                                [(modelName, [d['resName'] for d in modelData['resData']])
+                                                 for modelName, modelData in self._modelDict.iteritems()]
+                                            )
+
+        self._allAvailableRes = helpers._flattenList(
+                            [resNames for _, resNames in self._modelAvailableResNames.iteritems()], returnUnique=True)
 
     def _resetAll(self):
         self._modelListWidget.clear()
@@ -163,12 +168,11 @@ class MainWidget(MainWidgetUI):
         self._connected = True
 
     def _handleDoubleClick(self):
-        if str(self._resPathLineEdit.text())=="<No Common Path>":
+        if str(self._resPathLineEdit.text()) == "<No Common Path>":
             return
 
-        if str(self._resPathLineEdit.text())=="<Empty>":
+        if str(self._resPathLineEdit.text()) == "<Empty>":
             return
-
 
         if not hasattr(self, 'rw'):
             self.rw = ResPathEditWidget(widget=self._resPathLineEdit,
@@ -208,7 +212,6 @@ class MainWidget(MainWidgetUI):
             w.setForeground(QtGui.QColor(0, 0, 0))
             self._modelListWidget.addItem(w)
 
-
         self._modelListWidget.setCurrentRow(0)
         modelName, modelRes = helpers._getModelNameParts(str(self._modelListWidget.currentItem().text()))
         self._selectedModelName = modelName
@@ -221,14 +224,20 @@ class MainWidget(MainWidgetUI):
         self._avResListWidget.clear()
 
         if self._multiSelected:
-            self._selectedModelNames = [helpers._getModelNameParts(str(item.text()))[0] for item in self._modelListWidget.selectedItems()]
+            self._selectedModelNames = [helpers._getModelNameParts(str(item.text()))[0]
+                                        for item in self._modelListWidget.selectedItems()]
+
             allRes = helpers._getCommonRes(self._selectedModelNames, self._modelAvailableResNames)
 
             if not allRes:
                 self._avResListWidget.addItems(['  <No Common Res>  '])
                 return
 
-            commonActiveResList = helpers._getCommonRes(self._selectedModelNames, dict([(k, [v]) for k, v in self._modelActiveResNames.iteritems()])) # just converting commong active res dict to have list as values which the helpers function needs.
+            # Just converting commong active res dict to have
+            # list as values which the helpers function needs.
+            commonActiveResList = helpers._getCommonRes(
+                    self._selectedModelNames, dict([(k, [v]) for k, v in self._modelActiveResNames.iteritems()]))
+
             activeRes = (str(commonActiveResList[0]) if commonActiveResList else '')
 
         else:
@@ -240,9 +249,9 @@ class MainWidget(MainWidgetUI):
         for index, res in enumerate(allRes):
             w = QtGui.QListWidgetItem(res)
 
-            if activeRes=='':
+            if activeRes == '':
                 state = 1
-            elif res==activeRes:
+            elif res == activeRes:
                 state = 2
                 activeResIndex = index
             else:
@@ -266,11 +275,11 @@ class MainWidget(MainWidgetUI):
             resID = '<multiple selection>'
         else:
             resData = self._modelResData[self._selectedModelName]
-            resPath = str([d['resPath'] for d in resData if d['resName']==self._selectedResName][0])
-            resID = str([d['resID'] for d in resData if d['resName']==self._selectedResName][0])
+            resPath = str([d['resPath'] for d in resData if d['resName'] == self._selectedResName][0])
+            resID = str([d['resID'] for d in resData if d['resName'] == self._selectedResName][0])
 
-        if resPath=='':
-            resDisplayPath ="<Empty>"
+        if resPath == '':
+            resDisplayPath = "<Empty>"
         else:
             resDisplayPath = resPath[7:]
 
@@ -279,7 +288,8 @@ class MainWidget(MainWidgetUI):
         else:
             r, g, b = 0, 120, 0
 
-        self._resPathLineEdit.setStyleSheet("QLineEdit {background-color : rgb(230, 230, 230); color : rgb(%s, %s, %s)}" % (r, g, b))
+        self._resPathLineEdit.setStyleSheet(
+            "QLineEdit {background-color : rgb(230, 230, 230); color : rgb(%s, %s, %s)}" % (r, g, b))
 
         # Updating Selected  Res Path
         self._resPathLineEdit.setText(resDisplayPath)
@@ -309,22 +319,22 @@ class MainWidget(MainWidgetUI):
     def _checkBoxOnClicked(self, item):
         self._avResListWidget.setCurrentItem(item)
 
-        if item.checkState()==0:
-            self._avResListWidget.blockSignals(True) # blocking signals so the func does not go in recursion
+        if item.checkState() == 0:
+            self._avResListWidget.blockSignals(True)  # blocking signals so the func does not go in recursion
             item.setCheckState(2)
             self._avResListWidget.blockSignals(False)
             return
 
         for index in range(self._avResListWidget.count()):
             thisItem = self._avResListWidget.item(index)
-            if thisItem!=item:
-                self._avResListWidget.blockSignals(True) # blocking signals so the func does not go in recursion
+            if thisItem != item:
+                self._avResListWidget.blockSignals(True)  # blocking signals so the func does not go in recursion
                 thisItem.setCheckState(0)
                 self._avResListWidget.blockSignals(False)
 
         modelNames = (self._selectedModelNames if self._multiSelected else [self._selectedModelName])
 
-        for modelName in modelNames :
+        for modelName in modelNames:
             self._setActiveResolution(item, modelName)
 
         self._updateModelNamesWithRes(newRes=str(item.text()))
@@ -333,7 +343,7 @@ class MainWidget(MainWidgetUI):
         clickedRes = str(inItem.text())
         origRes = self._modelActiveResNamesOriginal[inModelName]
 
-        if clickedRes!=origRes:
+        if clickedRes != origRes:
             self._dataChanged = True
 
         self._modelActiveResNames[inModelName] = str(inItem.text())
@@ -341,7 +351,6 @@ class MainWidget(MainWidgetUI):
     def _updateModelNamesWithRes(self, newRes=''):
         selectionModel = self._modelListWidget.selectionModel()
 
-        indices = []
         for qModelIndex in selectionModel.selectedRows():
             index = qModelIndex.row()
             modelNameItem = self._modelListWidget.item(index)
@@ -353,10 +362,10 @@ class MainWidget(MainWidgetUI):
         self._handleFilterClicks(item)
 
     def _handleFilterClicks(self, inItem, doubleClick=False):
-        if str(inItem.text())=='All':
+        if str(inItem.text()) == 'All':
             for index in range(self._filterListWidget.count()):
                 thisItem = self._filterListWidget.item(index)
-                self._filterListWidget.blockSignals(True) # blocking signals so the func does not go in recursion
+                self._filterListWidget.blockSignals(True)  # blocking signals so the func does not go in recursion
                 thisItem.setCheckState(inItem.checkState())
                 self._filterListWidget.blockSignals(False)
 
@@ -365,10 +374,10 @@ class MainWidget(MainWidgetUI):
         state = 2
         for index in range(1, self._filterListWidget.count()):
             thisItem = self._filterListWidget.item(index)
-            if thisItem.checkState()!=2:
+            if thisItem.checkState() != 2:
                 state = 0
 
-        self._filterListWidget.blockSignals(True) # blocking signals so the func does not go in recursion
+        self._filterListWidget.blockSignals(True)  # blocking signals so the func does not go in recursion
         self._filterListWidget.item(0).setCheckState(state)
         self._filterListWidget.blockSignals(False)
 
@@ -381,7 +390,7 @@ class MainWidget(MainWidgetUI):
 
         for index in range(self._avResListWidget.count()):
             item = self._avResListWidget.item(index)
-            if item.text()=='Offloaded':
+            if item.text() == 'Offloaded':
                 self._avResListWidget.setCurrentRow(index)
                 item.setCheckState(2)
             else:
@@ -409,9 +418,9 @@ class MainWidget(MainWidgetUI):
             for resData in resDataList:
                 resID = resData['resID']
                 oldPath = resData['resPath']
-                newPath = [r['resPath'] for r in resDataListChanged if r['resID']==resID][0]
+                newPath = [r['resPath'] for r in resDataListChanged if r['resID'] == resID][0]
 
-                if oldPath!=newPath:
+                if oldPath != newPath:
 
                     if not pathChanged:
                         resLog += '%s\n\n' % modelName
@@ -423,21 +432,19 @@ class MainWidget(MainWidgetUI):
 
             # Getting Change in Active Res
             commitRes = self._modelActiveResNames[modelName]
-            if res!=commitRes:
+            if res != commitRes:
                 noChange = False
                 if not pathChanged:
                     resLog += '%s\n\n(RES CHANGE)  %s  -->  %s\n' % (modelName, res, commitRes)
-                    resLog+= '-' * 80
-                    resLog+='\n\n\n'
+                    resLog += '-' * 80
+                    resLog += '\n\n\n'
                     ctr += 1
                 else:
                     resLog += '(RES CHANGE)  %s  -->  %s\n' % (res, commitRes)
 
-
             if pathChanged:
-                resLog+= '-' * 80
-                resLog+= '\n\n\n'
-
+                resLog += '-' * 80
+                resLog += '\n\n\n'
 
         viewLog = ''
 
@@ -471,12 +478,11 @@ class MainWidget(MainWidgetUI):
             origResData = self._modelResDataOriginal[modelName]
             currentResData = self._modelResData[modelName]
 
-
             for resData in origResData:
                 origId = resData['resID']
                 origPath = resData['resPath']
                 for d in currentResData:
-                    if d['resID']==origId:
+                    if d['resID'] == origId:
                         d['resPath'] = origPath
 
         self._dataChanged = False
@@ -490,7 +496,7 @@ class MainWidget(MainWidgetUI):
             item = self._filterListWidget.item(i)
             state = item.checkState()
             allState += state
-            if state==2:
+            if state == 2:
                 selectedRes.append(str(item.text()))
 
         if not allState:
@@ -523,7 +529,7 @@ class MainWidget(MainWidgetUI):
         self._writeScntoc()
 
     def _cancelBtnOnClicked(self):
-        if self._closeMsg()==1:
+        if self._closeMsg() == 1:
             return
 
         QtCore.QCoreApplication.instance().quit()
@@ -544,17 +550,16 @@ class MainWidget(MainWidgetUI):
         for modelName, activeResName in self._modelActiveResNames.iteritems():
 
             # Changing Active Res Name in the Dict
-            self._modelDict[modelName]['activeRes'] = [  resDict['resID']
+            self._modelDict[modelName]['activeRes'] = [resDict['resID']
                                                        for resDict in self._modelResData[modelName]
-                                                       if resDict['resName']==activeResName][0]
+                                                       if resDict['resName'] == activeResName][0]
 
             # Changing Res Path in the Dict
             resDataList = self._modelDict[modelName]['resData']
             resDataListChanged = self._modelResData[modelName]
             for resData in resDataList:
                 resID = resData['resID']
-                oldPath = resData['resPath']
-                newPath = [r['resPath'] for r in resDataListChanged if r['resID']==resID][0]
+                newPath = [r['resPath'] for r in resDataListChanged if r['resID'] == resID][0]
                 resData['resPath'] = newPath
 
         # Writing changes to the scntoc file
@@ -570,6 +575,7 @@ class MainWidget(MainWidgetUI):
             if self._dataChanged:
                 if not msgHandler._pop(self, 104):
                     return 1
+
 
 class MainWindow(QtGui.QMainWindow):
     def __init__(self, *args, **kwargs):
@@ -681,7 +687,7 @@ class MainWindow(QtGui.QMainWindow):
         ss = StyleSheet()
         ss._writePrefs(pref=theme)
         ss.setColor(self._mainWidget)
-        ss.setColor(self, app= QtCore.QCoreApplication.instance())
+        ss.setColor(self, app=QtCore.QCoreApplication.instance())
 
     def _onFileOpen(self, inFile=''):
         mw = self._mainWidget
@@ -729,8 +735,6 @@ class MainWindow(QtGui.QMainWindow):
         self._updateRecentMenu()
         self.setWindowTitle("%s      %s" % (WIN_TITLE, inFile))
 
-
-
     def _onAboutAction(self):
         self._showHelpWidget()
 
@@ -752,6 +756,7 @@ class MainWindow(QtGui.QMainWindow):
             if mw._dataChanged:
                 if not msgHandler._pop(self, 104):
                     event.ignore()
+
 
 def run():
     app = QtGui.QApplication(sys.argv)
