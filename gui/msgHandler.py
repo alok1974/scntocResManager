@@ -1,30 +1,20 @@
-###########################################################################################
-###########################################################################################
-##                                                                                       ##
-##  Scenetoc Resolution Manager V 1.02 (c) 2013 Alok Gandhi (alok.gandhi2002@gmail.com)  ##
-##                                                                                       ##
-##                                                                                       ##
-##  This file is part of Scenetoc Res Manager.                                           ##
-##                                                                                       ##
-##  Scenetoc Res Manager is free software: you can redistribute it and/or modify         ##
-##  it under the terms of the GNU General Public License, Version 3, 29 June 2007        ##
-##  as published by the Free Software Foundation,                                        ##
-##                                                                                       ##
-##  Scenetoc Res Manager is distributed in the hope that it will be useful,              ##
-##  but WITHOUT ANY WARRANTY; without even the implied warranty of                       ##
-##  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the                        ##
-##  GNU General Public License for more details.                                         ##
-##                                                                                       ##
-##  You should have received a copy of the GNU General Public License                    ##
-##  along with Scenetoc Res Manager.  If not, see <http://www.gnu.org/licenses/>.        ##
-##                                                                                       ##
-###########################################################################################
-###########################################################################################
-
-import os
-import sys
-from PyQt4 import QtCore, QtGui
-from logger import Logger
+#  Scenetoc Resolution Manager V 1.02 (c) 2013 Alok Gandhi (alok.gandhi2002@gmail.com)
+#
+#
+#  This file is part of Scenetoc Res Manager.
+#
+#  Scenetoc Res Manager is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License, Version 3, 29 June 2007
+#  as published by the Free Software Foundation,
+#
+#  Scenetoc Res Manager is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with Scenetoc Res Manager.  If not, see <http://www.gnu.org/licenses/>.
+from PyQt4 import QtGui
 
 TITLE = "SCNTOC RES MANAGER"
 IS_MSG = 0
@@ -40,7 +30,8 @@ ENUM_CODE = {
                 3: ('You need to have at least one res selected to apply the filer.', IS_MSG),
                 4: ('No Models with %s combination of filters.', IS_MSG),
                 5: ('There are no changes to save.', IS_MSG),
-                6: ('The file path - %s does not exist !. This path will be removed from the recent files list.', IS_MSG),
+                6: ('The file path - %s does not exist !. This path will be'
+                    'removed from the recent files list.', IS_MSG),
 
                 # Questions
                 101: ('Do you want to offoad all models ?', IS_QUESTION),
@@ -53,16 +44,17 @@ ENUM_CODE = {
 def _addArgs(inStr, inArgs=[]):
     p = inStr.split("%s")
 
-    if len(inArgs)!=len(p) - 1:
+    if len(inArgs) != len(p) - 1:
         raise Exception("Need same numbers args and specifiers !!")
 
     f = ''
     for i in range(len(inArgs)):
-        f += '%s%s'% (p[i], inArgs[i])
+        f += '%s%s' % (p[i], inArgs[i])
 
     f += p[-1]
 
     return f
+
 
 def _makePara(inText):
     allWords = inText.split(" ")
@@ -72,7 +64,7 @@ def _makePara(inText):
         if '/' in word:
             allPWords = word.split('/')
             for index, pWord in enumerate(allPWords):
-                if index==len(allPWords) - 1:
+                if index == len(allPWords) - 1:
                     nWord = pWord
                 else:
                     nWord = '%s/' % pWord
@@ -106,18 +98,19 @@ def _wrapMsg(inMsg, args=[]):
 
     return msg
 
+
 def _pop(widget, code, extraArgs=[]):
     msg, type = ENUM_CODE.get(code)
 
     msg = _wrapMsg(msg, args=extraArgs)
 
-    if type==IS_MSG:
+    if type == IS_MSG:
         QtGui.QMessageBox.information(widget, TITLE, msg)
 
-    elif type==IS_QUESTION:
+    elif type == IS_QUESTION:
         reply = QtGui.QMessageBox.question(widget, TITLE, msg, YES, NO)
 
-        if reply==YES:
+        if reply == YES:
             return True
 
         return False
